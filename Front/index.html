@@ -1,0 +1,859 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Object Reader</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@400;500;600&display=swap"
+        rel="stylesheet" />
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+
+<body>
+    <div class="sidebar-overlay" id="overlay"></div>
+
+    <!-- ============================================================
+       SIDEBAR
+  ============================================================ -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-logo">
+            <span>Object</span>
+            <span>Reader</span>
+            <small>Patrimônio Escolar</small>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-label">Principal</div>
+            <div class="nav-item active" data-page="inicio">
+                <i data-lucide="layout-dashboard"></i> Início
+            </div>
+            <div class="nav-item" data-page="historico">
+                <i data-lucide="history"></i> Histórico
+            </div>
+
+            <div class="nav-label">Ações</div>
+            <div class="nav-item" data-page="scanner">
+                <i data-lucide="scan-qr-code"></i> Escanear
+            </div>
+            <div class="nav-item" data-page="dados">
+                <i data-lucide="database"></i> Dados
+            </div>
+
+            <div class="nav-label">Sistema</div>
+            <div class="nav-item" data-page="informacoes">
+                <i data-lucide="book-text"></i> Informações Técnicas
+            </div>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="sidebar-user">
+                <div class="user-avatar">JO</div>
+                <div class="user-info">
+                    <div class="user-name">João Oliveira</div>
+                    <div class="user-role">Administrador</div>
+                </div>
+                <i data-lucide="chevron-right" class="chevron-icon"></i>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ============================================================
+       APP WRAPPER
+  ============================================================ -->
+    <div class="app-wrapper">
+        <div class="main-content">
+            <!-- MOBILE HEADER -->
+            <header class="mobile-header">
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i data-lucide="menu"></i>
+                </button>
+                <div class="mobile-logo">Object<br />Reader</div>
+                <div style="width: 36px"></div>
+            </header>
+
+            <!-- DESKTOP HEADER -->
+            <header class="top-header">
+                <div class="header-title" id="headerTitle">Início</div>
+                <div class="header-actions">
+                    <button class="icon-btn">
+                        <i data-lucide="search"></i>
+                    </button>
+                    <button class="icon-btn">
+                        <i data-lucide="bell"></i>
+                        <div class="notif-dot"></div>
+                    </button>
+                    <button class="icon-btn">
+                        <i data-lucide="circle-user"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- ==================================================
+           DESKTOP PAGES
+      ================================================== -->
+            <div class="desktop-pages">
+                <!-- ── INÍCIO ── -->
+                <div class="desktop-page active" data-desktop-page="inicio">
+                    <div class="page-content">
+                        <div class="hero-banner">
+                            <div class="hero-greeting">Olá, Admin!</div>
+                            <div class="hero-title">Seu patrimônio escolar</div>
+                            <div class="stat-card">
+                                <div class="stat-info">
+                                    <div class="stat-label">Total Ativo</div>
+                                    <div class="stat-number" id="desktopStatTotal">—</div>
+                                    <div class="stat-sub" id="desktopStatSub">carregando...</div>
+                                </div>
+                                <div class="stat-icon">
+                                    <i data-lucide="archive"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="main-grid-layout">
+                            <div class="left-col">
+                                <div class="section-card">
+                                    <div class="section-header">
+                                        <div class="section-title">Ações Rápidas</div>
+                                    </div>
+                                    <div class="quick-actions">
+                                        <button class="action-btn" data-goto="scanner">
+                                            <div class="action-icon">
+                                                <i data-lucide="scan-qr-code"></i>
+                                            </div>
+                                            <span class="action-label">Escanear</span>
+                                        </button>
+                                        <button class="action-btn" data-goto="historico">
+                                            <div class="action-icon">
+                                                <i data-lucide="history"></i>
+                                            </div>
+                                            <span class="action-label">Histórico</span>
+                                        </button>
+                                        <button class="action-btn" data-goto="dados">
+                                            <div class="action-icon">
+                                                <i data-lucide="database"></i>
+                                            </div>
+                                            <span class="action-label">Dados</span>
+                                        </button>
+                                        <button class="action-btn" data-goto="informacoes">
+                                            <div class="action-icon">
+                                                <i data-lucide="book-text"></i>
+                                            </div>
+                                            <span class="action-label">Inf. Técnicas</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="section-card right-col">
+                                <div class="section-header">
+                                    <div class="section-title">Últimas Leituras</div>
+                                    <button class="see-all" data-goto="historico">
+                                        Ver tudo
+                                    </button>
+                                </div>
+                                <div class="recent-list" id="desktopRecentList"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── HISTÓRICO ── -->
+                <div class="desktop-page" data-desktop-page="historico">
+                    <div class="page-content">
+                        <div class="page-header-row">
+                            <h2 class="page-main-title">Histórico de Leituras</h2>
+                            <div class="filter-row">
+                                <div class="filter-chip active">Todos</div>
+                                <div class="filter-chip">Novo</div>
+                                <div class="filter-chip">Usado</div>
+                                <div class="filter-chip">Velho</div>
+                            </div>
+                        </div>
+                        <div class="section-card" style="margin-top: 20px">
+                            <table class="history-table">
+                                <thead>
+                                    <tr>
+                                        <th>Item</th>
+                                        <th>Local</th>
+                                        <th>Data</th>
+                                        <th>Estado</th>
+                                        <th>Código</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="desktopHistoryBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── SCANNER DESKTOP ── -->
+                <div class="desktop-page" data-desktop-page="scanner">
+                    <div class="page-content">
+                        <div class="page-header-row">
+                            <h2 class="page-main-title">Scanner de Código</h2>
+                        </div>
+                        <div class="scanner-desktop-layout">
+                            <div class="section-card scanner-card">
+                                <div class="section-header">
+                                    <div class="section-title">Câmera</div>
+                                    <div class="scanner-status-badge" id="desktopScannerBadge">
+                                        <span class="badge-dot"></span> Inativo
+                                    </div>
+                                </div>
+
+                                <div class="scanner-viewport" id="desktopScannerViewport">
+                                    <div class="scanner-idle-screen" id="desktopIdleScreen">
+                                        <i data-lucide="scan-qr-code"></i>
+                                        <p>Câmera inativa</p>
+                                        <span>Clique em "Iniciar Scanner" para começar</span>
+                                    </div>
+                                    <video id="desktopVideo" autoplay playsinline style="display: none"></video>
+                                    <div class="laser" id="desktopLaser" style="display: none"></div>
+                                </div>
+
+                                <div class="scanner-controls">
+                                    <button class="btn-primary" id="desktopBtnStart">
+                                        <i data-lucide="play"></i> Iniciar Scanner
+                                    </button>
+                                    <button class="btn-secondary" id="desktopBtnStop" style="display: none">
+                                        <i data-lucide="square"></i> Pausar
+                                    </button>
+                                </div>
+                                <p class="status" id="desktopStatusMsg">
+                                    Certifique-se de usar Chrome ou Edge.
+                                </p>
+                            </div>
+
+                            <div class="scanner-side">
+                                <!-- Painel: aguardando leitura -->
+                                <div class="section-card result-card" id="desktopWaitingPanel">
+                                    <div class="section-header">
+                                        <div class="section-title">Último Resultado</div>
+                                    </div>
+                                    <div class="result-display" id="desktopResultDisplay">
+                                        <i data-lucide="barcode"></i>
+                                        <span id="desktopResultSpan">Aguardando leitura...</span>
+                                    </div>
+                                    <button class="btn-success full-width" id="desktopBtnUse" style="display: none">
+                                        <i data-lucide="check"></i> Usar Este Código
+                                    </button>
+                                </div>
+
+                                <!-- Painel: resultado do objeto (aparece após "Usar") -->
+                                <div class="section-card obj-result-panel" id="desktopObjPanel" style="display:none;">
+                                    <div class="section-header">
+                                        <div class="section-title">Objeto Encontrado</div>
+                                        <button class="btn-ghost" id="desktopBtnBack">
+                                            <i data-lucide="arrow-left"></i>
+                                        </button>
+                                    </div>
+                                    <div class="obj-result-loading" id="desktopObjLoading">
+                                        <i data-lucide="loader-circle"></i>
+                                        <span>Consultando banco de dados...</span>
+                                    </div>
+                                    <div class="obj-result-content" id="desktopObjContent" style="display:none;">
+                                        <div class="obj-result-icon">📦</div>
+                                        <div class="obj-result-name" id="desktopObjName">—</div>
+                                        <div class="obj-result-rows">
+                                            <div class="obj-result-row">
+                                                <span class="obj-result-label"><i data-lucide="barcode"></i>
+                                                    Código</span>
+                                                <span class="obj-result-value" id="desktopObjCode">—</span>
+                                            </div>
+                                            <div class="obj-result-row">
+                                                <span class="obj-result-label"><i data-lucide="map-pin"></i>
+                                                    Local</span>
+                                                <span class="obj-result-value" id="desktopObjLocal">—</span>
+                                            </div>
+                                            <div class="obj-result-row">
+                                                <span class="obj-result-label"><i data-lucide="tag"></i> Estado</span>
+                                                <span id="desktopObjState">—</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="obj-result-error" id="desktopObjError" style="display:none;">
+                                        <i data-lucide="circle-x"></i>
+                                        <span>Objeto não encontrado no sistema.</span>
+                                    </div>
+                                </div>
+
+                                <div class="section-card" id="desktopInstructionsPanel">
+                                    <div class="section-header">
+                                        <div class="section-title">Instruções</div>
+                                    </div>
+                                    <ul class="instruction-list">
+                                        <li><i data-lucide="circle-check"></i> Use Chrome ou Edge</li>
+                                        <li><i data-lucide="circle-check"></i> Aponte para o código de barras</li>
+                                        <li><i data-lucide="circle-check"></i> A detecção é automática</li>
+                                        <li><i data-lucide="circle-check"></i> Clique em "Usar Este Código" para
+                                            confirmar</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── DADOS ── -->
+                <div class="desktop-page" data-desktop-page="dados">
+                    <div class="page-content">
+                        <div class="page-header-row">
+                            <h2 class="page-main-title">Gerenciar Dados</h2>
+                            <button class="btn-primary" id="desktopBtnAddItem">
+                                <i data-lucide="plus"></i> Novo Item
+                            </button>
+                        </div>
+
+                        <div class="data-stats-row">
+                            <div class="data-stat-card">
+                                <div class="data-stat-icon green">
+                                    <i data-lucide="package-check"></i>
+                                </div>
+                                <div>
+                                    <div class="data-stat-num">842</div>
+                                    <div class="data-stat-label">Itens Novos</div>
+                                </div>
+                            </div>
+                            <div class="data-stat-card">
+                                <div class="data-stat-icon orange">
+                                    <i data-lucide="package"></i>
+                                </div>
+                                <div>
+                                    <div class="data-stat-num">310</div>
+                                    <div class="data-stat-label">Itens Usados</div>
+                                </div>
+                            </div>
+                            <div class="data-stat-card">
+                                <div class="data-stat-icon red">
+                                    <i data-lucide="package-x"></i>
+                                </div>
+                                <div>
+                                    <div class="data-stat-num">93</div>
+                                    <div class="data-stat-label">Itens Velhos</div>
+                                </div>
+                            </div>
+                            <div class="data-stat-card">
+                                <div class="data-stat-icon purple">
+                                    <i data-lucide="map-pin"></i>
+                                </div>
+                                <div>
+                                    <div class="data-stat-num">12</div>
+                                    <div class="data-stat-label">Locais</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section-card" id="desktopAddForm" style="display: none; margin-top: 20px">
+                            <div class="section-header">
+                                <div class="section-title">Adicionar Novo Item</div>
+                                <button class="btn-ghost" id="desktopCloseForm">
+                                    <i data-lucide="x"></i>
+                                </button>
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label>Nome do Item</label>
+                                    <input type="text" placeholder="Ex: Cadeira Ergonômica" id="desktopObjNameInput"/>
+                                </div>
+                                <div class="form-group">
+                                    <label>Código de Barras</label>
+                                    <input type="text" placeholder="Ex: 7891234567890" id="desktopObjCodeInput"/>
+                                </div>
+                                <div class="form-group">
+                                    <label>Local</label>
+                                    <select id="desktopObjLocalInput">
+                                        <option>Sala</option>
+                                        <option>Secretaria</option>
+                                        <option>Lab 01 (técnico)</option>
+                                        <option>Lab 02 (uso geral)</option>
+                                        <option>Biblioteca</option>
+                                        <option>Pedagogia</option>
+                                        <option>Outro</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Estado</label>
+                                    <select id="desktopObjStateInput">
+                                        <option>Novo</option>
+                                        <option>Usado</option>
+                                        <option>Velho</option>
+                                    </select>
+                                </div>
+                                <div class="form-group full-span">
+                                    <label>Observações</label>
+                                    <textarea placeholder="Informações adicionais. Se você selecionou 'outro' no campo 'local', por favor, especificar aqui, pois ninguém é vidente para saber onde está o objeto!" id="desktopObjObsInput"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button class="btn-secondary" id="desktopCancelForm">
+                                    Cancelar
+                                </button>
+                                <button class="btn-primary" id="desktopBtnSave">
+                                    <i data-lucide="save"></i> Salvar Item
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="section-card" style="margin-top: 20px">
+                            <div class="section-header">
+                                <div class="section-title">Todos os Itens</div>
+                                <div class="search-box">
+                                    <i data-lucide="search"></i>
+                                    <input type="text" placeholder="Buscar item..." />
+                                </div>
+                            </div>
+                            <table class="history-table">
+                                <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>Código</th>
+                                        <th>Local</th>
+                                        <th>Estado</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="desktopDataBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── INFORMAÇÕES TÉCNICAS ── -->
+                <div class="desktop-page" data-desktop-page="informacoes">
+                    <div class="page-content">
+                        <div class="page-header-row">
+                            <h2 class="page-main-title">Informações Técnicas</h2>
+                        </div>
+                        <div class="info-grid">
+                            <div class="section-card info-card-main">
+                                <div class="info-badge"><i data-lucide="cpu"></i></div>
+                                <h3 class="info-title">Object Reader</h3>
+                                <p class="info-version">Versão 1.0.0</p>
+                                <p class="info-desc">
+                                    Sistema de gestão de patrimônio escolar com leitura de
+                                    código de barras via câmera, desenvolvido para uso interno e
+                                    integração com o núcleo de educação.
+                                </p>
+                            </div>
+
+                            <div class="section-card">
+                                <div class="section-header">
+                                    <div class="section-title">Stack Tecnológico</div>
+                                </div>
+                                <ul class="tech-list">
+                                    <li>
+                                        <i data-lucide="file-code-2"></i><span><strong>HTML5</strong> — Estrutura
+                                            semântica</span>
+                                    </li>
+                                    <li>
+                                        <i data-lucide="palette"></i><span><strong>CSS3</strong> — Grid, Flexbox, Custom
+                                            Properties</span>
+                                    </li>
+                                    <li>
+                                        <i data-lucide="braces"></i><span><strong>JavaScript</strong> — Vanilla JS, sem
+                                            frameworks</span>
+                                    </li>
+                                    <li>
+                                        <i data-lucide="scan-qr-code"></i><span><strong>BarcodeDetector API</strong> —
+                                            Leitura
+                                            nativa</span>
+                                    </li>
+                                    <li>
+                                        <i data-lucide="shapes"></i><span><strong>Lucide Icons</strong> — Ícones
+                                            SVG</span>
+                                    </li>
+                                    <li>
+                                        <i data-lucide="type"></i><span><strong>Google Fonts</strong> — Syne + DM
+                                            Sans</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="section-card">
+                                <div class="section-header">
+                                    <div class="section-title">Compatibilidade</div>
+                                </div>
+                                <ul class="tech-list">
+                                    <li>
+                                        <i data-lucide="check-circle-2"
+                                            style="color: var(--green-text)"></i><span>Google Chrome
+                                            (recomendado)</span>
+                                    </li>
+                                    <li>
+                                        <i data-lucide="check-circle-2"
+                                            style="color: var(--green-text)"></i><span>Microsoft Edge</span>
+                                    </li>
+                                    <li>
+                                        <i data-lucide="check-circle-2"
+                                            style="color: var(--green-text)"></i><span>Android — Chrome</span>
+                                    </li>
+                                    <li>
+                                        <i data-lucide="x-circle" style="color: var(--red-text)"></i><span>Firefox —
+                                            BarcodeDetector não suportado</span>
+                                    </li>
+                                    <li>
+                                        <i data-lucide="x-circle" style="color: var(--red-text)"></i><span>Safari —
+                                            BarcodeDetector não suportado</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="section-card">
+                                <div class="section-header">
+                                    <div class="section-title">Formatos Suportados</div>
+                                </div>
+                                <div class="barcode-grid">
+                                    <div class="barcode-chip">Code 128</div>
+                                    <div class="barcode-chip">EAN-13</div>
+                                    <div class="barcode-chip">Code 39</div>
+                                    <div class="barcode-chip">QR Code</div>
+                                    <div class="barcode-chip">Data Matrix</div>
+                                    <div class="barcode-chip">PDF417</div>
+                                </div>
+                            </div>
+
+                            <div class="section-card full-info-span">
+                                <div class="section-header">
+                                    <div class="section-title">Arquitetura do Projeto</div>
+                                </div>
+                                <div class="arch-list">
+                                    <div class="arch-item">
+                                        <div class="arch-icon">
+                                            <i data-lucide="file-code"></i>
+                                        </div>
+                                        <div>
+                                            <div class="arch-name">index.html</div>
+                                            <div class="arch-desc">
+                                                Estrutura completa da aplicação. Páginas renderizadas
+                                                via JS com show/hide por atributos
+                                                <code>data-desktop-page</code> e
+                                                <code>reference-page</code>.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="arch-item">
+                                        <div class="arch-icon">
+                                            <i data-lucide="paintbrush"></i>
+                                        </div>
+                                        <div>
+                                            <div class="arch-name">style.css</div>
+                                            <div class="arch-desc">
+                                                Estilos organizados por seções com CSS Custom
+                                                Properties para theming e media queries para
+                                                responsividade mobile/desktop.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="arch-item">
+                                        <div class="arch-icon"><i data-lucide="zap"></i></div>
+                                        <div>
+                                            <div class="arch-name">script.js</div>
+                                            <div class="arch-desc">
+                                                Lógica de navegação SPA-like, BarcodeDetector API,
+                                                gerenciamento de câmera e renderização dinâmica de
+                                                listas compartilhadas.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /desktop-pages -->
+
+            <!-- ==================================================
+           MOBILE CONTENT
+      ================================================== -->
+            <div class="mobile-content" id="mobileContent">
+                <!-- ── INÍCIO ── -->
+                <div reference-page="inicio">
+                    <div class="mobile-hero">
+                        <div class="mobile-greeting">Olá, Admin!</div>
+                        <div class="mobile-title">Seu patrimônio escolar</div>
+                        <div class="mobile-stat-card">
+                            <div>
+                                <div class="stat-label">Total Ativo</div>
+                                <div class="stat-number" id="mobileStatTotal" style="font-size: 36px">—</div>
+                                <div class="stat-sub" id="mobileStatSub">carregando...</div>
+                            </div>
+                            <div class="stat-icon"><i data-lucide="archive"></i></div>
+                        </div>
+                    </div>
+                    <div class="mobile-page-content">
+                        <div class="section-header">
+                            <div class="section-title">Últimas Leituras</div>
+                            <button class="see-all mobile-goto" data-goto="historico">
+                                Ver tudo
+                            </button>
+                        </div>
+                        <div class="recent-list mobile-recent-list" id="mobileRecentList"></div>
+                    </div>
+                </div>
+
+                <!-- ── HISTÓRICO ── -->
+                <div reference-page="historico" class="mobile-scs">
+                    <div class="mobile-scs-header">
+                        <div class="mobile-title" style="margin-bottom: 0">Histórico</div>
+                    </div>
+                    <div class="filter-row mobile-filters">
+                        <div class="filter-chip active">Todos</div>
+                        <div class="filter-chip">Novo</div>
+                        <div class="filter-chip">Usado</div>
+                        <div class="filter-chip">Velho</div>
+                    </div>
+                    <div class="recent-list mobile-recent-list" id="mobileHistoryList"></div>
+                </div>
+
+                <!-- ── SCANNER ── -->
+                <div reference-page="scanner" class="mobile-scs">
+                    <div class="mobile-scs-header">
+                        <div class="mobile-title" style="margin-bottom: 0">Scanner</div>
+                        <div class="scanner-status-badge" id="mobileScannerBadge">
+                            <span class="badge-dot"></span> Inativo
+                        </div>
+                    </div>
+
+                    <!-- Tela do scanner (some ao usar código) -->
+                    <div id="mobileScannerView">
+                        <div class="scanner-viewport" id="mobileScannerViewport">
+                            <div class="scanner-idle-screen" id="mobileIdleScreen">
+                                <i data-lucide="scan-qr-code"></i>
+                                <p>Câmera inativa</p>
+                                <span>Toque em "Iniciar" para escanear</span>
+                            </div>
+                            <video id="mobileVideo" autoplay playsinline style="display: none"></video>
+                            <div class="laser" id="mobileLaser" style="display: none"></div>
+                        </div>
+
+                        <div class="result-display mobile-result" id="mobileResultDisplay">
+                            <i data-lucide="barcode"></i>
+                            <span id="mobileResultSpan">Aguardando leitura...</span>
+                        </div>
+
+                        <div class="scanner-controls">
+                            <button class="btn-primary" id="mobileBtnStart">
+                                <i data-lucide="play"></i> Iniciar
+                            </button>
+                            <button class="btn-secondary" id="mobileBtnStop" style="display: none">
+                                <i data-lucide="square"></i> Pausar
+                            </button>
+                            <button class="btn-success" id="mobileBtnUse" style="display: none">
+                                <i data-lucide="check"></i> Usar Código
+                            </button>
+                        </div>
+                        <p class="status" id="mobileStatusMsg">
+                            Certifique-se de usar Chrome ou Edge.
+                        </p>
+                    </div>
+
+                    <!-- Painel de resultado (aparece ao usar código) -->
+                    <div id="mobileObjPanel" style="display:none;">
+                        <div class="obj-result-loading" id="mobileObjLoading">
+                            <i data-lucide="loader-circle"></i>
+                            <span>Consultando banco de dados...</span>
+                        </div>
+                        <div class="obj-result-card" id="mobileObjContent" style="display:none;">
+                            <div class="obj-result-icon">📦</div>
+                            <div class="obj-result-name" id="mobileObjName">—</div>
+                            <div class="obj-result-rows">
+                                <div class="obj-result-row">
+                                    <span class="obj-result-label"><i data-lucide="barcode"></i> Código</span>
+                                    <span class="obj-result-value" id="mobileObjCode">—</span>
+                                </div>
+                                <div class="obj-result-row">
+                                    <span class="obj-result-label"><i data-lucide="map-pin"></i> Local</span>
+                                    <span class="obj-result-value" id="mobileObjLocal">—</span>
+                                </div>
+                                <div class="obj-result-row">
+                                    <span class="obj-result-label"><i data-lucide="tag"></i> Estado</span>
+                                    <span id="mobileObjState">—</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="obj-result-error" id="mobileObjError" style="display:none;">
+                            <i data-lucide="circle-x"></i>
+                            <span>Objeto não encontrado no sistema.</span>
+                        </div>
+                        <button class="btn-secondary full-width" id="mobileBtnBack" style="margin-top:16px;">
+                            <i data-lucide="arrow-left"></i> Voltar ao Scanner
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ── DADOS ── -->
+                <div reference-page="dados" class="mobile-scs">
+                    <div class="mobile-scs-header">
+                        <div class="mobile-title" style="margin-bottom: 0">Dados</div>
+                        <button class="btn-primary btn-sm" id="mobileBtnAddItem">
+                            <i data-lucide="plus"></i> Novo
+                        </button>
+                    </div>
+
+                    <div class="mobile-stats-row">
+                        <div class="mobile-mini-stat green">
+                            <div class="mini-stat-num">842</div>
+                            <div class="mini-stat-label">Novos</div>
+                        </div>
+                        <div class="mobile-mini-stat orange">
+                            <div class="mini-stat-num">310</div>
+                            <div class="mini-stat-label">Usados</div>
+                        </div>
+                        <div class="mobile-mini-stat red">
+                            <div class="mini-stat-num">93</div>
+                            <div class="mini-stat-label">Velhos</div>
+                        </div>
+                    </div>
+
+                    <div class="mobile-add-form" id="mobileAddForm" style="display: none">
+                        <div class="section-header" style="margin-bottom: 14px">
+                            <div class="section-title">Novo Item</div>
+                            <button class="btn-ghost" id="mobileCloseForm">
+                                <i data-lucide="x"></i>
+                            </button>
+                        </div>
+                        <div class="form-group">
+                            <label>Nome</label><input type="text" placeholder="Ex: Cadeira Ergonômica" id="ObjName"
+                                required />
+                        </div>
+                        <div class="form-group">
+                            <label>Código</label><input type="text" placeholder="Ex: 7891234567890" id="ObjCode"
+                                required />
+                        </div>
+                        <div class="form-group">
+                            <label>Local</label>
+                            <select id="ObjLocal" required>
+                                <option>Sala</option>
+                                <option>Secretaria</option>
+                                <option>Lab 01 (técnico)</option>
+                                <option>Lab 02 (uso geral)</option>
+                                <option>Biblioteca</option>
+                                <option>Pedagogia</option>
+                                <option>Outro</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Estado</label>
+                            <select id="ObjState" required>
+                                <option>Novo</option>
+                                <option>Usado</option>
+                                <option>Velho</option>
+                            </select>
+                        </div>
+                        <div class="form-actions">
+                            <button class="btn-secondary" id="mobileCancelForm">
+                                Cancelar
+                            </button>
+                            <button class="btn-primary" id="ObjAddSave">
+                                <i data-lucide="save"></i> Salvar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="recent-list mobile-recent-list" id="mobileDataList"></div>
+                </div>
+
+                <!-- ── INFORMAÇÕES TÉCNICAS ── -->
+                <div reference-page="informacoes" class="mobile-scs">
+                    <div class="mobile-scs-header" style="margin-bottom: 16px">
+                        <div class="mobile-title" style="margin-bottom: 0">
+                            Inf. Técnicas
+                        </div>
+                    </div>
+
+                    <div class="info-card-main mobile-info-hero">
+                        <div class="info-badge"><i data-lucide="cpu"></i></div>
+                        <h3 class="info-title">Object Reader</h3>
+                        <p class="info-version">Versão 1.0.0</p>
+                        <p class="info-desc">
+                            Sistema de gestão de patrimônio escolar com leitura de códigos
+                            de barras via câmera nativa do navegador.
+                        </p>
+                    </div>
+
+                    <div class="mobile-add-form" style="margin-top: 16px">
+                        <div class="section-title" style="margin-bottom: 12px">
+                            Stack Tecnológico
+                        </div>
+                        <ul class="tech-list">
+                            <li>
+                                <i data-lucide="file-code-2"></i><span><strong>HTML5</strong> — Estrutura
+                                    semântica</span>
+                            </li>
+                            <li>
+                                <i data-lucide="palette"></i><span><strong>CSS3</strong> — Grid, Flexbox, Custom
+                                    Properties</span>
+                            </li>
+                            <li>
+                                <i data-lucide="braces"></i><span><strong>JavaScript</strong> — Vanilla, sem
+                                    frameworks</span>
+                            </li>
+                            <li>
+                                <i data-lucide="scan-qr-code"></i><span><strong>BarcodeDetector API</strong> — Scanner
+                                    nativo</span>
+                            </li>
+                            <li>
+                                <i data-lucide="shapes"></i><span><strong>Lucide Icons</strong> — Ícones SVG</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="mobile-add-form" style="margin-top: 12px">
+                        <div class="section-title" style="margin-bottom: 12px">
+                            Compatibilidade
+                        </div>
+                        <ul class="tech-list">
+                            <li>
+                                <i data-lucide="check-circle-2" style="color: var(--green-text)"></i><span>Chrome —
+                                    Recomendado</span>
+                            </li>
+                            <li>
+                                <i data-lucide="check-circle-2" style="color: var(--green-text)"></i><span>Edge —
+                                    Suportado</span>
+                            </li>
+                            <li>
+                                <i data-lucide="x-circle" style="color: var(--red-text)"></i><span>Firefox — Não
+                                    suportado</span>
+                            </li>
+                            <li>
+                                <i data-lucide="x-circle" style="color: var(--red-text)"></i><span>Safari — Não
+                                    suportado</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- /mobile-content -->
+        </div>
+    </div>
+
+    <!-- BOTTOM NAV -->
+    <nav class="bottom-nav">
+        <div class="bottom-nav-items">
+            <button class="bottom-nav-item active" data-nav="inicio">
+                <i data-lucide="house"></i><span>Início</span>
+            </button>
+            <button class="bottom-nav-item" data-nav="historico">
+                <i data-lucide="history"></i><span>Histórico</span>
+            </button>
+            <button class="bottom-nav-center" id="scanBtn" data-nav="scanner">
+                <i data-lucide="scan-qr-code"></i>
+            </button>
+            <button class="bottom-nav-item" data-nav="dados">
+                <i data-lucide="database"></i><span>Dados</span>
+            </button>
+            <button class="bottom-nav-item" data-nav="informacoes">
+                <i data-lucide="book-text"></i><span>Inf. Téc.</span>
+            </button>
+        </div>
+    </nav>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
