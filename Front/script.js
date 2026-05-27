@@ -2,7 +2,7 @@
    OBJECT READER — script.js
    ============================================= */
 
-const API_BASE = 'https://objectreader.onrender.com';
+const API_BASE = '';
 
 // ─────────────────────────────────────────────
 // UTILITÁRIOS

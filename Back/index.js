@@ -5,11 +5,14 @@
 const mysql = require('mysql2/promise');
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 require('dotenv').config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+app.use(express.static(path.join(__dirname, '..', 'Front')));
 
 // ─────────────────────────────────────────────
 // POOL DE CONEXÃO — usa variáveis do .env
@@ -163,9 +166,9 @@ app.post('/additem', requirePool, async (req, res) => {
 // ─────────────────────────────────────────────
 // START
 // ─────────────────────────────────────────────
-const PORT = process.env.PORT ?? 3000;
+const PORT = process.env.PORT ?? 5000;
 
-app.listen(PORT, async () => {
+app.listen(PORT, '0.0.0.0', async () => {
     console.log(`>> [SERVER] Rodando na porta ${PORT}`);
     await hostConnect();
 });
