@@ -284,6 +284,7 @@ document.addEventListener('DOMContentLoaded', () => {
             btnStop.style.display = 'flex';
             objPanel.style.display = 'none';
             statusMsg.innerText = "Aponte para o código...";
+            video.style.display = 'block';
 
             // Loop que tenta ler o código a cada 500ms
             scanInterval = setInterval(async () => {
@@ -316,6 +317,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         btnStart.style.display = 'flex';
         btnStop.style.display = 'none';
+        video.style.display = 'none';
         idleScreen.style.display = 'block';
     }
 
