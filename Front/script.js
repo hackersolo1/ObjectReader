@@ -340,12 +340,10 @@ document.addEventListener('DOMContentLoaded', () => {
             .single();
 
         if (error || !data) {
-            alert(`Poxa, nenhum objeto com o código ${scannedCode} foi encontrado.`);
-            statusMsg.innerText = "Objeto não cadastrado.";
+            statusMsg.innerText = "Objeto não encontrado.";
         } else {
             // Objeto encontrado! Mostramos os dados:
             showObjInfo(data);
-            alert(`📦 Objeto Encontrado!\n\nNome: ${data.objName}\nLocal: ${data.objLocal}\nEstado: ${data.objState}\nObs: ${data.objObs}`);
             statusMsg.innerText = "Pronto para o próximo!";
         }
     });
