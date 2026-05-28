@@ -1256,6 +1256,12 @@ button {
     width: 160px;
 }
 
+@media (min-width: 900px) {
+    .recentList {
+        display: none;
+    }
+}
+
 /* =============================================
    INFORMAÇÕES TÉCNICAS
    ============================================= */
