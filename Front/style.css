@@ -1257,7 +1257,7 @@ button {
 }
 
 @media (min-width: 900px) {
-    .recentList {
+    .recent-list {
         display: none;
     }
 }
