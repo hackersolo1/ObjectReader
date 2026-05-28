@@ -244,11 +244,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
 
     // Capturando os botões da interface
-    const mobileBtnStart = document.getElementById('mobileBtnStart');
-    const mobileBtnStop = document.getElementById('mobileBtnStop');
-    const mobileResultSpan = document.getElementById('mobileResultSpan');
-    const mobileResultDisplay = document.getElementById('mobileResultDisplay');
-    const mobileBtnUse = document.getElementById('mobileBtnUse');
+    const btnStart = document.getElementById('btnStart');
+    const btnStop = document.getElementById('btnStop');
+    const resultSpan = document.getElementById('resultSpan');
+    const resultDisplay = document.getElementById('objPanel');
+    const btnUse = document.getElementById('btnUse');
+
+    const objPanel = document.getElementById('objPanel');
+    const objPanelName = document.getElementById('objName');
+    const objPanelCode = document.getElementById('objCode');
+    const objPanelLocal = document.getElementById('objLocal');
+    const objPanelState = document.getElementById('objState');
 
     let stream = null;
     let barcodeDetector = null;
@@ -259,7 +265,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!('BarcodeDetector' in window)) {
         statusMsg.innerText = "Navegador não suporta leitura nativa. Use o Chrome no Android.";
         statusMsg.style.color = "var(--red-text)";
-        mobileBtnStart.disabled = true;
+        btnStart.disabled = true;
     } else {
         barcodeDetector = new BarcodeDetector({ formats: ['ean_13', 'code_128', 'qr_code', 'upc_a'] });
     }
@@ -273,10 +279,10 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             video.srcObject = stream;
 
-            mobileBtnStart.style.display = 'none';
-            mobileBtnStop.style.display = 'flex';
-            mobileResultDisplay.style.display = 'none';
-            statusMsg.innerText = "Apontando para o código...";
+            btnStart.style.display = 'none';
+            btnStop.style.display = 'flex';
+            objPanel.style.display = 'none';
+            statusMsg.innerText = "Aponte para o código...";
 
             // Loop que tenta ler o código a cada 500ms
             scanInterval = setInterval(async () => {
@@ -287,8 +293,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         stopScanner(); // Desliga a câmera na mesma hora
 
                         scannedCode = code;
-                        mobileResultSpan.innerText = code;
-                        mobileResultDisplay.style.display = 'block';
+                        resultSpan.innerText = code;
+                        objPanel.style.display = 'block';
                         statusMsg.innerText = "Código capturado!";
                     }
                 }
@@ -307,16 +313,16 @@ document.addEventListener('DOMContentLoaded', () => {
             stream.getTracks().forEach(track => track.stop());
             video.srcObject = null;
         }
-        mobileBtnStart.style.display = 'flex';
-        mobileBtnStop.style.display = 'none';
+        btnStart.style.display = 'flex';
+        btnStop.style.display = 'none';
     }
 
     // Eventos dos botões
-    mobileBtnStart.addEventListener('click', startScanner);
-    mobileBtnStop.addEventListener('click', stopScanner);
+    btnStart.addEventListener('click', startScanner);
+    btnStop.addEventListener('click', stopScanner);
 
     // 4. Buscar o Objeto no Supabase!
-    mobileBtnUse.addEventListener('click', async () => {
+    btnUse.addEventListener('click', async () => {
         if (!scannedCode) return;
 
         statusMsg.innerText = "Buscando no banco de dados...";
@@ -325,17 +331,26 @@ document.addEventListener('DOMContentLoaded', () => {
             .from('ObjInfo')
             .select('*')
             .eq('objCode', scannedCode)
-            .single(); // Traz apenas 1 resultado
+            .single();
 
         if (error || !data) {
             alert(`Poxa, nenhum objeto com o código ${scannedCode} foi encontrado.`);
             statusMsg.innerText = "Objeto não cadastrado.";
         } else {
             // Objeto encontrado! Mostramos os dados:
+            showObjInfo(data);
             alert(`📦 Objeto Encontrado!\n\nNome: ${data.objName}\nLocal: ${data.objLocal}\nEstado: ${data.objState}\nObs: ${data.objObs}`);
             statusMsg.innerText = "Pronto para o próximo!";
-            mobileResultDisplay.style.display = 'none'; // Reseta a tela
         }
     });
+
+    function showObjInfo(d) {
+        objPanelName.textContent = d.objName;
+        objPanelCode.textContent = d.objCode;
+        objPanelLocal.textContent = d.objLocal;
+        objPanelState.textContent = d.objState;
+
+        objPanel.style.display = 'block';
+    }
 
 });
