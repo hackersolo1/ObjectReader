@@ -44,10 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     btnLoginGoogle.addEventListener('click', async () => {
         const { error } = await supabaseC.auth.signInWithOAuth({
-            provider: 'google',
-            options: {
-                redirectTo: 'http://127.0.0.1:3000/ObjectReader/Front/index.html'
-            }
+            provider: 'google'
         });
         if (error) {
             console.log(error);
