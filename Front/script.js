@@ -255,6 +255,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const objPanelCode = document.getElementById('objCode');
     const objPanelLocal = document.getElementById('objLocal');
     const objPanelState = document.getElementById('objState');
+    const objLoading = document.getElementById('objLoading');
+    const objContent = document.getElementById('objContent');
 
     let stream = null;
     let barcodeDetector = null;
@@ -355,6 +357,8 @@ document.addEventListener('DOMContentLoaded', () => {
         objPanelState.textContent = d.objState;
 
         objPanel.style.display = 'block';
+        objLoading.style.display = 'none';
+        objContent.style.display = 'block';
     }
 
 });
