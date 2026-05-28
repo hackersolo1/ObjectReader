@@ -296,8 +296,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
                         scannedCode = code;
                         resultSpan.innerText = code;
-                        objPanel.style.display = 'block';
                         statusMsg.innerText = "Código capturado!";
+                        btnUse.style.display = 'inline-block';
                     }
                 }
             }, 500);
@@ -318,7 +318,7 @@ document.addEventListener('DOMContentLoaded', () => {
         btnStart.style.display = 'flex';
         btnStop.style.display = 'none';
         video.style.display = 'none';
-        idleScreen.style.display = 'block';
+        idleScreen.style.display = 'flex';
     }
 
     // Eventos dos botões
