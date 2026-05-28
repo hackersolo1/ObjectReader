@@ -278,6 +278,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 video: { facingMode: "environment" }
             });
             video.srcObject = stream;
+            idleScreen.style.display = 'none';
 
             btnStart.style.display = 'none';
             btnStop.style.display = 'flex';
@@ -315,6 +316,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         btnStart.style.display = 'flex';
         btnStop.style.display = 'none';
+        idleScreen.style.display = 'block';
     }
 
     // Eventos dos botões
