@@ -215,7 +215,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const {data: upoloadData, error: uploadError} = await supabaseC.storage.from('codeReaderImgFiles').upload(imageName, image);
 
-        if(error) {
+        if(uploadError) {
             alert(`Erro ao salvar imagem: ${uploadError}`);
             return;
         }
