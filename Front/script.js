@@ -211,6 +211,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    let imgn = null;
+
     async function saveObj(name, code, local, state, obs, imageName, image) {
 
         const {data: upoloadData, error: uploadError} = await supabaseC.storage.from('codeReaderImgFiles').upload(`private/${imageName}`, image);
@@ -222,7 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const {data: urlData} = await supabaseC.storage.from('codeReaderImgFiles').getPublicUrl(`private/${imageName}`);
         if(urlData) {
-            const imgn = urlData.publicUrl;
+            imgn = urlData.publicUrl;
         }
 
         const { error } = await supabaseC.from('ObjInfo').insert({
