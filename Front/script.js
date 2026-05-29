@@ -213,14 +213,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function saveObj(name, code, local, state, obs, imageName, image) {
 
-        const {data: upoloadData, error: uploadError} = await supabaseC.storage.from('codeReaderImgFiles').upload(imageName, image);
+        const {data: upoloadData, error: uploadError} = await supabaseC.storage.from('codeReaderImgFiles').upload(`private/${imageName}`, image);
 
         if(uploadError) {
             alert(`Erro ao salvar imagem: ${uploadError}`);
             return;
         }
 
-        const {data: urlData} = await supabaseC.storage.from('codeReaderImgFiles').getPublicUrl(imageName);
+        const {data: urlData} = await supabaseC.storage.from('codeReaderImgFiles').getPublicUrl(`private/${imageName}`);
         if(data) {
             const imgn = urlData.publicUrl;
         }
