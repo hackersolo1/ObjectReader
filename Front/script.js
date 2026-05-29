@@ -221,7 +221,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const {data: urlData} = await supabaseC.storage.from('codeReaderImgFiles').getPublicUrl(`private/${imageName}`);
-        if(data) {
+        if(urlData) {
             const imgn = urlData.publicUrl;
         }
 
