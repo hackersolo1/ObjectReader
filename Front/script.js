@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const objCodeInput = document.getElementById('objCodeInput');
     const objLocalInput = document.getElementById('objLocalInput');
     const objStateInput = document.getElementById('objStateInput');
+    const objImageInput = document.getElementById('objImageInput');
     const btnSave = document.getElementById('btnSave');
     const objObsInput = document.getElementById('objObsInput');
     const dataList = document.getElementById('dataList');
@@ -57,13 +58,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const local = objLocalInput.value.trim();
         const state = objStateInput.value.trim();
         const obs = objObsInput.value.trim();
+        const image = objImageInput.files[0];
+        const imageName = image.name;
 
         if (!name || !code) {
             alert("Insira pelo menos o nome e o código do objeto.");
             return;
         }
 
-        await saveObj(name, code, local, state, obs);
+        await saveObj(name, code, local, state, obs, imageName, image);
     });
 
 
@@ -208,14 +211,27 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    async function saveObj(name, code, local, state, obs) {
+    async function saveObj(name, code, local, state, obs, imageName, image) {
+
+        const {data: upoloadData, error: uploadError} = await supabaseC.storage.from('codeReaderImgFiles').upload(imageName, image);
+
+        if(error) {
+            alert(`Erro ao salvar imagem: ${error}`);
+            return;
+        }
+
+        const {data: urlData} = await supabaseC.storage.from('codeReaderImgFiles').getPublicUrl(imageName);
+        if(data) {
+            const imgn = urlData.publicUrl;
+        }
 
         const { error } = await supabaseC.from('ObjInfo').insert({
             objCode: code,
             objName: name,
             objState: state || 'Descinhecido',
             objLocal: local || 'Desconhecido',
-            objObs: obs || 'Sem observações'
+            objObs: obs || 'Sem observações',
+            img_url: imgn || 'Sem imagem'
         });
         if (error) {
             console.log(error);
@@ -255,6 +271,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const objPanelCode = document.getElementById('objCode');
     const objPanelLocal = document.getElementById('objLocal');
     const objPanelState = document.getElementById('objState');
+    const objPanelImage = document.getElementById('objImage');
     const objLoading = document.getElementById('objLoading');
     const objContent = document.getElementById('objContent');
 
@@ -268,8 +285,18 @@ document.addEventListener('DOMContentLoaded', () => {
         statusMsg.innerText = "Navegador não suporta leitura nativa. Use o Chrome no Android.";
         statusMsg.style.color = "var(--red-text)";
         btnStart.disabled = true;
+
+        btnStart.style.opacity = '0.5';
+        btnStart.style.cursor = 'not-allowed';
+        btnStart.disabled = true;
+        btnStart.title = 'Seu navegador não tem suporte para o Scanner';
     } else {
         barcodeDetector = new BarcodeDetector({ formats: ['ean_13', 'code_128', 'qr_code', 'upc_a'] });
+
+        btnStart.style.opacity = '1';
+        btnStart.style.cursor = 'cursor';
+        btnStart.disabled = false;
+        btnStart.title = 'Iniciar scanner';
     }
 
     // 2. Função para Ligar a Câmera
@@ -353,6 +380,7 @@ document.addEventListener('DOMContentLoaded', () => {
         objPanelCode.textContent = d.objCode;
         objPanelLocal.textContent = d.objLocal;
         objPanelState.textContent = d.objState;
+        objPanelImage.src = d.img_url || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSx8k7scWzVok_KNTIgvWUIx-eNyftqwOrx9g&s' ;
 
         objPanel.style.display = 'block';
         objLoading.style.display = 'none';

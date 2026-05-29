@@ -252,14 +252,15 @@ body {
 .top-header {
     background: white;
     height: var(--header-height);
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: space-between;
     padding: 0 28px;
     border-bottom: 1px solid var(--gray-200);
-    position: sticky;
+    position: fixed;
     top: 0;
     z-index: 50;
+    width: 83vw;
 }
 
 .header-title {
@@ -303,8 +304,15 @@ body {
 }
 
 .page.active {
-    display: block;
+    padding-top: 50px;
+    display: inline-block;
     animation: fadeInUp 0.3s ease both;
+}
+
+@media (max-width: 768px) {
+    .page.active {
+        padding-top: 0px;
+    }
 }
 
 .page-content {
@@ -1749,6 +1757,11 @@ button {
     width: 32px;
     height: 32px;
     color: var(--red-text);
+}
+
+.obj-result-row #objImage {
+    width: 100%;
+    object-fit: cover;
 }
 
 /* =============================================

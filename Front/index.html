@@ -191,6 +191,13 @@
                                         <span class="obj-result-label"><i data-lucide="tag"></i> Estado</span>
                                         <span id="objState">—</span>
                                     </div>
+                                    <div class="obj-result-row">
+                                        <span class="obj-result-label"><i data-lucide="book"></i> Observações</span>
+                                        <span id="objObs">-</span>
+                                    </div>
+                                    <div class="obj-result-row">
+                                        <img id="objImage">
+                                    </div>
                                 </div>
                             </div>
                             <div class="obj-result-error" id="objError" style="display:none;">
@@ -274,6 +281,10 @@
                             <textarea
                                 placeholder="Informações adicionais. Se você selecionou 'outro' no campo 'local', por favor, especificar aqui, pois ninguém é vidente para saber onde está o objeto!"
                                 id="objObsInput"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Imagem</label>
+                            <input type="file" id="objImageInput">
                         </div>
                     </div>
                     <div class="form-actions">
