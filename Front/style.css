@@ -1220,6 +1220,7 @@ button {
     background: white;
     transition: border-color var(--transition);
     outline: none;
+    width: 85vw
 }
 
 .form-group input:focus,
