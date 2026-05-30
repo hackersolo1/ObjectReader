@@ -251,7 +251,6 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log(error);
       alert(`Erro ao salvar o objeto. ${error}`);
     } else {
-      alert("Objeto salvo com êxito.");
       addForm.style.display = "none";
 
       objNameInput.value = "";
@@ -259,7 +258,6 @@ document.addEventListener("DOMContentLoaded", () => {
       objLocalInput.value = "";
       objObsInput.value = "";
 
-      // Atualiza a tabela na tela para mostrar o novo item
       dataTableBody.innerHTML = "";
       loadObjects();
     }
@@ -279,6 +277,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const resultSpan = document.getElementById("resultSpan");
   const resultDisplay = document.getElementById("objPanel");
   const btnUse = document.getElementById("btnUse");
+  const goToBellow = document.getElementById('goToBellow');
 
   const objPanel = document.getElementById("objPanel");
   const objPanelName = document.getElementById("objName");
@@ -286,8 +285,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const objPanelLocal = document.getElementById("objLocal");
   const objPanelState = document.getElementById("objState");
   const objPanelImage = document.getElementById("objImage");
+  const objPanelObs = document.getElementById('objObs');
   const objLoading = document.getElementById("objLoading");
   const objContent = document.getElementById("objContent");
+
 
   let stream = null;
   let barcodeDetector = null;
@@ -396,6 +397,7 @@ document.addEventListener("DOMContentLoaded", () => {
     objPanelCode.textContent = d.objCode;
     objPanelLocal.textContent = d.objLocal;
     objPanelState.textContent = d.objState;
+    objPanelObs.textContent = d.objObs;
     objPanelImage.src =
       d.img_url ||
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSx8k7scWzVok_KNTIgvWUIx-eNyftqwOrx9g&s";
@@ -403,5 +405,7 @@ document.addEventListener("DOMContentLoaded", () => {
     objPanel.style.display = "block";
     objLoading.style.display = "none";
     objContent.style.display = "block";
+
+    goToBellow.click();
   }
 });
