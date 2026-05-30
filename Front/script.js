@@ -60,9 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   [headerAvatarIcon, AvatarIconBottom].forEach((icon) => {
     icon.addEventListener("click", () => {
-      if (supabaseC.auth.getSession()) {
-        supabaseC.auth.signOut();
-      };
+      supabaseC.auth.signOut();
     });
   });
 
