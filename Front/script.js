@@ -58,12 +58,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  [headerAvatarIcon, AvatarIconBottom].forEach((icon) => {
-    icon.addEventListener("click", () => {
-      console.log('clicado')
-      logout();
-    });
+  headerAvatarIcon.addEventListener("click", () => {
+    console.log('1');
+    logout();
   });
+
+  AvatarIconBottom.addEventListener("click", () => {
+    console.log('2');
+    logout();
+  });
+
 
   btnSave.addEventListener("click", async () => {
     const name = objNameInput.value.trim();
