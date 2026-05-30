@@ -1720,6 +1720,11 @@ button {
     border-bottom: 1px solid var(--gray-100);
 }
 
+.obj-result-row #objObs {
+    margin-left: 10px;
+    font-size: 12px;
+}
+
 .obj-result-label {
     display: flex;
     align-items: center;
