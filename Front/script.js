@@ -44,6 +44,10 @@ document.addEventListener("DOMContentLoaded", () => {
   goToScanner.addEventListener("click", () => {
     document.querySelector('[data-page="scanner"]').click();
   });
+  
+  [iconBtn, bottomIconBtn].forEach((b) => {
+    b.addEventListener("click", logout);
+  });
 
   [closeForm, cancelForm].forEach((b) => {
     b.addEventListener("click", () => {
@@ -60,9 +64,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  [iconBtn, bottomIconBtn].forEach((b) => {
-    b.addEventListener("click", logout);
-  });
 
 
   btnSave.addEventListener("click", async () => {
