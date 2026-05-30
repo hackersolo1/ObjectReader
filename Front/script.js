@@ -247,7 +247,7 @@ document.addEventListener("DOMContentLoaded", () => {
       bottomNavItem.forEach((b) => {
         b.classList.remove("active");
       });
-      document.querySelector(`.bottom-nav-item [data-nav="inicio"]`).classList.add("active");
+      document.querySelector(`[data-nav="inicio"]`).classList.add("active");
     }
   }
 
