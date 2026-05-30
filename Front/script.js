@@ -16,6 +16,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const addForm = document.getElementById("addForm");
   const closeForm = document.getElementById("closeForm");
   const cancelForm = document.getElementById("cancelForm");
+  const iconBtn = document.getElementById('icon-btn');
+  const bottomIconBtn = document.getElementById('bottom-icon-btn');
   const headerAvatarImg = document.getElementById("headerAvatarImg");
   const AvatarImgBottom = document.getElementById("AvatarImgBottom");
   const headerAvatarIcon = document.getElementById("headerAvatarIcon");
@@ -58,14 +60,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  headerAvatarIcon.addEventListener("click", () => {
-    console.log('1');
-    logout();
-  });
-
-  AvatarIconBottom.addEventListener("click", () => {
-    console.log('2');
-    logout();
+  [iconBtn, bottomIconBtn].forEach((b) => {
+    b.addEventListener("click", logout);
   });
 
 
