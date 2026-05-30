@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   [headerAvatarIcon, AvatarIconBottom].forEach((icon) => {
     icon.addEventListener("click", () => {
-      supabaseC.auth.signOut();
+      logout();
     });
   });
 
@@ -225,6 +225,13 @@ document.addEventListener("DOMContentLoaded", () => {
       btnAddItem.title = "Faça login para adicionar mais itens.";
     }
   });
+
+  function logout() {
+    const {error} = supabaseC.auth.signOut();
+    if (error) {
+      console.log("Erro ao sair:", error);
+    }
+  }
 
   let imgn = null;
 
