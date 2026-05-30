@@ -60,6 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   [headerAvatarIcon, AvatarIconBottom].forEach((icon) => {
     icon.addEventListener("click", () => {
+      console.log('clicado')
       logout();
     });
   });
