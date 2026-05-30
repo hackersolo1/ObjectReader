@@ -45,10 +45,10 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelector('[data-page="scanner"]').click();
   });
 
-  iconBtn.addEventListener('click', logout);
+  [iconBtn, bottomIconBtn].forEach((b) => {
+    b.addEventListener("click", logout);
+  });
 
-  bottomIconBtn.addEventListener('click', logout);
-  
   [closeForm, cancelForm].forEach((b) => {
     b.addEventListener("click", () => {
       addForm.style.display = "none";
