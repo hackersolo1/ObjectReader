@@ -234,10 +234,20 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log("Erro ao sair:", error);
     } else {
       addForm.style.display = 'none';
-       document.querySelectorAll(".app-wrapper .page").forEach((bpa) => {
+      document.querySelectorAll(".app-wrapper .page").forEach((bpa) => {
         bpa.classList.remove("active");
       });
       document.querySelector(`.app-wrapper [data-page="inicio"]`).classList.add("active");
+
+      pages.forEach((p) => {
+        p.classList.remove('active');
+      });
+      document.querySelector('aside [data-page="inicio"]').classList.add('active');
+
+      bottomNavItem.forEach((b) => {
+        b.classList.remove("active");
+      });
+      document.querySelector(`.bottom-nav-item [data-nav="inicio"]`).classList.add("active");
     }
   }
 
