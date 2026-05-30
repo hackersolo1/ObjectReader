@@ -58,6 +58,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  [headerAvatarIcon, AvatarIconBottom].forEach((icon) => {
+    icon.addEventListener("click", () => {
+      if (supabaseC.auth.getSession()) {
+        supabaseC.auth.signOut();
+      };
+    });
+
   btnSave.addEventListener("click", async () => {
     const name = objNameInput.value.trim();
     const code = objCodeInput.value.trim();
