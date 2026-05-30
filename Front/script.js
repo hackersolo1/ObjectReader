@@ -232,6 +232,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const {error} = supabaseC.auth.signOut();
     if (error) {
       console.log("Erro ao sair:", error);
+    } else {
+      addForm.style.display = 'none';
+      pages.forEach((pa) => pa.classList.remove("active"));
+      document.querySelector(`.app-wrapper [data-page="inicio"]`).classList.add("active");
     }
   }
 
