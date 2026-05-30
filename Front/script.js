@@ -64,6 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
         supabaseC.auth.signOut();
       };
     });
+  });
 
   btnSave.addEventListener("click", async () => {
     const name = objNameInput.value.trim();
