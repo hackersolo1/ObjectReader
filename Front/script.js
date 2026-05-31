@@ -89,8 +89,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const state = objStateInput.value.trim();
     const obs = objObsInput.value.trim();
     const image = objImageInput.files[0];
+    const imageName = null;
     if (image) {
-      const imageName = image.name;
+      imageName = image.name;
     } else {
       imageName = null;
     }
