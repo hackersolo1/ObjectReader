@@ -101,7 +101,8 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    btnSave.innerHTML = '<i data-lucide="loader-circle" class="loaderI"></i>'
+    btnSave.innerHTML = '<i data-lucide="loader-circle" class="loaderI"></i>';
+    lucide.createIcons();
     btnSave.style = "opacity: 0.5; cursor: not-allowed";
     btnSave.disabled = true;
     await saveObj(name, code, local, state, obs, imageName, image);
@@ -117,7 +118,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     console.log(oldC);
 
-    btnSaveEdit.innerHTML = '<i data-lucide="loader-circle" class="loaderI"></i>'
+    btnSaveEdit.innerHTML = '<i data-lucide="loader-circle" class="loaderI"></i>';
+    lucide.createIcons();
     btnSaveEdit.style = "opacity: 0.5; cursor: not-allowed";
     btnSaveEdit.disabled = true;
     await updateObjInfo(oldC, name, code, local, state, obs);
@@ -368,7 +370,8 @@ document.addEventListener("DOMContentLoaded", () => {
         dataList.innerHTML = '';
         loadObjects();
 
-        btnSave.innerHTML = '<i data-lucide="save"></i> Salvar item'
+        btnSave.innerHTML = '<i data-lucide="save"></i> Salvar item';
+        lucide.createIcons();
         btnSave.style = "opacity: 1; cursor: pointer";
         btnSave.disabled = false;
       }
@@ -396,12 +399,14 @@ document.addEventListener("DOMContentLoaded", () => {
         dataList.innerHTML = '';
         loadObjects();
 
-        btnSave.innerHTML = '<i data-lucide="save"></i> Salvar item'
+        btnSave.innerHTML = '<i data-lucide="save"></i> Salvar item';
+        lucide.createIcons();
         btnSave.style = "opacity: 1; cursor: cursor";
         btnSave.disabled = false;
       }
     }
-    btnSave.innerHTML = '<i data-lucide="save"></i> Salvar item'
+    btnSave.innerHTML = '<i data-lucide="save"></i> Salvar item';
+    lucide.createIcons();
     btnSave.style = "opacity: 1; cursor: pointer";
     btnSave.disabled = false;
   }
@@ -427,7 +432,8 @@ document.addEventListener("DOMContentLoaded", () => {
     dataList.innerHTML = '';
     loadObjects();
 
-    btnSaveEdit.innerHTML = '<i data-lucide="save"></i> Atualizar item'
+    btnSaveEdit.innerHTML = '<i data-lucide="save"></i> Atualizar item';
+    lucide.createIcons();
     btnSaveEdit.style = "opacity: 1; cursor: pointerd";
     btnSaveEdit.disabled = false;
   }
