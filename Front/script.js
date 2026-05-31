@@ -305,6 +305,7 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log("Erro ao sair:", error);
     } else {
       addForm.style.display = 'none';
+      editForm.style.display = 'none';
       document.querySelectorAll(".app-wrapper .page").forEach((bpa) => {
         bpa.classList.remove("active");
       });
