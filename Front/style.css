@@ -321,6 +321,7 @@ body {
 
 .page-content {
     padding: 28px;
+    width: 80vw;
 }
 
 .page-header-row {
@@ -464,6 +465,17 @@ body {
     border-radius: var(--radius-xl);
     padding: 22px;
     box-shadow: var(--shadow-sm);
+    width: 100%;
+}
+
+#editForm {
+    width: 100%;
+}
+
+#editForm input,
+#editForm select,
+#editForm textarea {
+    width: 100%;
 }
 
 .section-header {
@@ -1489,6 +1501,7 @@ button {
     .page-content {
         padding: 20px;
         padding-bottom: 100px;
+        width: 100vw;
     }
 
     /* Hero adjusts on mobile */

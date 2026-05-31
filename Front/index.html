@@ -257,7 +257,7 @@
                             <input type="text" placeholder="Ex: 7891234567890" id="objCodeInput" />
                             <button id="goToScanner" class="btn-secondary" style="margin-top: 8px; font-size: 14px;">
                                 Não tem o código? Ir para o Scanner
-                                <i data-lucide="scan-qr-code"></i>                       
+                                <i data-lucide="scan-qr-code"></i>
                             </button>
                         </div>
                         <div class="form-group">
@@ -296,6 +296,63 @@
                         <button class="btn-secondary" id="cancelForm">Cancelar</button>
                         <button class="btn-primary" id="btnSave">
                             <i data-lucide="save"></i> Salvar Item
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Edit form -->
+                <div class="section-card edit-form" id="editForm" style="display: none; margin-top: 20px">
+                    <div class="section-header">
+                        <div class="section-title">Editar item</div>
+                        <button class="btn-ghost" id="closeEditForm">
+                            <i data-lucide="x"></i>
+                        </button>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Nome do Item</label>
+                            <input type="text" placeholder="Ex: Cadeira Ergonômica" id="objNameInputEdit" />
+                        </div>
+                        <div class="form-group">
+                            <label>Código de Barras</label>
+                            <input type="text" placeholder="Ex: 7891234567890" id="objCodeInputEdit" />
+                        </div>
+                        <div class="form-group">
+                            <label>Local</label>
+                            <select id="objLocalInputEdit">
+                                <option>Sala</option>
+                                <option>Secretaria</option>
+                                <option>Lab 01 (técnico)</option>
+                                <option>Lab 02 (uso geral)</option>
+                                <option>Biblioteca</option>
+                                <option>Pedagogia</option>
+                                <option>Outro</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Estado</label>
+                            <select id="objStateInputEdit">
+                                <option>Novo</option>
+                                <option>Bom</option>
+                                <option>Regular</option>
+                                <option>Inservível</option>
+                            </select>
+                        </div>
+                        <div class="form-group full-span">
+                            <label>Observações</label>
+                            <textarea
+                                placeholder="Informações adicionais. Se você selecionou 'outro' no campo 'local', por favor, especificar aqui, pois ninguém é vidente para saber onde está o objeto!"
+                                id="objObsInputEdit"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Imagem</label>
+                            <input type="file" id="objImageInputEdit">
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button class="btn-secondary" id="cancelEditForm">Cancelar</button>
+                        <button class="btn-primary" id="btnSaveEdit">
+                            <i data-lucide="save"></i> Atualizar itens
                         </button>
                     </div>
                 </div>
@@ -430,13 +487,36 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="section-card full-info-span">
+                        <div class="section-header">
+                            <div class="section-title">Desenvolvimento</div>
+                        </div>
+                        <div class="arch-list">
+                            <div class="arch-item">
+                                <div class="arch-icon"><i data-lucide="code-2"></i></div>
+                                <div class="arch-name">Criado por:</div>
+                                <div class="arch-desc">Paulo G.</div>
+                            </div>
+                            <div class="arch-item">
+                                <div class="arch-icon"><i data-lucide="contact-round"></i></div>
+                                <div class="arch-name">GitHub:</div>
+                                <div class="arch-desc">
+                                    <a href="https://github.com/hackersolo1/" target="_blank" style="color: var(--purple); text-decoration: none;">@hackersolo1</a>
+                                </div>
+                            </div>
+                            <div class="arch-item">
+                                <div class="arch-icon"><i data-lucide="message-square"></i></div>
+                                <div class="arch-name">Suporte/Contato:</div>
+                                <div class="arch-desc">(41) 99865-6934.</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-
     </div>
     <!-- /main-content -->
-    </div>
     <!-- /app-wrapper -->
 
     <!-- BOTTOM NAV (mobile only) -->

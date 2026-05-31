@@ -36,6 +36,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnSave = document.getElementById("btnSave");
   const objObsInput = document.getElementById("objObsInput");
   const dataList = document.getElementById("dataList");
+  const editForm = document.getElementById('editForm');
+  const closeEditForm = document.getElementById('closeEditForm');
+  const cancelEditForm = document.getElementById('cancelEditForm');
+  const objNameInputEdit = document.getElementById('objNameInputEdit');
+  const objCodeInputEdit = document.getElementById('objCodeInputEdit');
+  const objLocalInputEdit = document.getElementById('objLocalInputEdit');
+  const objStateInputEdit = document.getElementById('objStateInputEdit');
+  const objObsInputEdit = document.getElementById('objObsInputEdit');
+  const btnSaveEdit = document.getElementById('btnSaveEdit');
 
   btnAddItem.addEventListener("click", () => {
     addForm.style.display = "block";
@@ -52,6 +61,12 @@ document.addEventListener("DOMContentLoaded", () => {
   [closeForm, cancelForm].forEach((b) => {
     b.addEventListener("click", () => {
       addForm.style.display = "none";
+    });
+  });
+
+  [closeEditForm, cancelEditForm].forEach((b) => {
+    b.addEventListener('click', () => {
+      editForm.style.display = 'none';
     });
   });
 
@@ -81,6 +96,19 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     await saveObj(name, code, local, state, obs, imageName, image);
+  });
+
+  let oldC = null;
+  btnSaveEdit.addEventListener('click', async () => {
+    const name = objNameInputEdit.value.trim();
+    const code = objCodeInputEdit.value.trim();
+    const local = objLocalInputEdit.value.trim();
+    const state = objStateInputEdit.value.trim();
+    const obs = objObsInputEdit.value.trim();
+
+    console.log(oldC);
+
+    await updateObjInfo(oldC, name, code, local, state, obs);
   });
 
   pages.forEach((p) => {
@@ -156,18 +184,46 @@ document.addEventListener("DOMContentLoaded", () => {
             <td>${d.objLocal}</td>
             <td><span class="item-badge">${d.objState}</span></td>
             <td>
-                <span class="table-code">${d.objState}</span>
-            </td>
-            <td>
                 <div class="table-actions">
-                    <button class="btn-icon" title="Editar"><i data-lucide="pencil"></i></button>
-                    <button class="btn-icon danger" title="Excluir" data-code="${d.objCode}"><i data-lucide="trash-2"></i></button>
+                    <button class="btn-icon editObjBtn" title="Editar" data-code="${d.objCode}"><i data-lucide="pencil"></i></button>
+                    <button class="btn-icon danger deleteObjBtn" title="Excluir" data-code="${d.objCode}"><i data-lucide="trash-2"></i></button>
                 </div>
             </td>
         `;
 
+
     dataTableBody.appendChild(tr);
     lucide.createIcons();
+    document.querySelectorAll('.editObjBtn').forEach((b) => {
+      b.addEventListener('click', (e) => {
+        const objCode = e.currentTarget.dataset.code;
+        editObjShow(objCode);
+        oldC = objCode;
+      });
+    });
+
+    document.querySelectorAll('.deleteObjBtn').forEach((b) => {
+      b.addEventListener('click', (e) => {
+        const objCode = e.currentTarget.dataset.code;
+        deleteObj(objCode);
+      });
+    });
+
+    supabaseC.auth.onAuthStateChange((event, session) => {
+      if (session && session.user) {
+        document.querySelectorAll('.btn-icon').forEach((bi) => {
+          bi.disabled = false;
+          bi.style = 'opacity: 1; cursor: pointer';
+          bi.title = ''
+        });
+      } else {
+        document.querySelectorAll('.btn-icon').forEach((bi) => {
+          bi.disabled = true;
+          bi.style = 'opacity: 0.5; cursor: not-allowed';
+          bi.title = 'Faça login para realizar essa ação'
+        });
+      }
+    });
   }
 
   function mobileRender(d) {
@@ -213,7 +269,8 @@ document.addEventListener("DOMContentLoaded", () => {
       btnAddItem.title = "Adicionar mais itens.";
 
       userName.textContent = userInfo.name;
-      userRole.textContent = "Criador";
+      userRole.textContent = "Administrador";
+
     } else {
       heroGreeting.innerText = "Olá, visitante!";
       headerAvatarImg.style.display = "none";
@@ -225,11 +282,14 @@ document.addEventListener("DOMContentLoaded", () => {
       btnAddItem.style.opacity = "0.5";
       btnAddItem.style.cursor = "not-allowed";
       btnAddItem.title = "Faça login para adicionar mais itens.";
+
+      userName.textContent = 'Olá, visitante!';
+      userRole.textContent = "Visitante";
     }
   });
 
   function logout() {
-    const {error} = supabaseC.auth.signOut();
+    const { error } = supabaseC.auth.signOut();
     if (error) {
       console.log("Erro ao sair:", error);
     } else {
@@ -290,8 +350,64 @@ document.addEventListener("DOMContentLoaded", () => {
       objObsInput.value = "";
 
       dataTableBody.innerHTML = "";
+      dataList.innerHTML = '';
       loadObjects();
     }
+  }
+
+  async function updateObjInfo(oldC, name, code, local, state, obs) {
+    const { data, error } = await supabaseC.from('ObjInfo').update({
+      objCode: code,
+      objName: name,
+      objState: state || 'Desconhecido',
+      objLocal: local || 'Desconhecido',
+      objObs: obs || 'Sem observações'
+    }).eq('objCode', oldC);
+
+    if (error) {
+      alert(`Não foi possível atualizar as informações do objeto: ${error}`);
+      console.log(error);
+      return;
+    }
+
+    editForm.style.display = 'none';
+
+    dataTableBody.innerHTML = '';
+    dataList.innerHTML = '';
+    loadObjects();
+
+  }
+
+  async function editObjShow(c) {
+    const { data, error } = await supabaseC.from('ObjInfo').select('*').eq('objCode', c);
+
+    if (error) {
+      alert(`Erro ao consultar informações do objeto: ${error}`);
+      return;
+    }
+
+    const objInfo = data[0];
+
+    objNameInputEdit.value = objInfo.objName;
+    objCodeInputEdit.value = objInfo.objCode;
+    objLocalInputEdit.value = objInfo.objLocal;
+    objStateInputEdit.value = objInfo.objState;
+    objObsInputEdit.value = objInfo.objObs || 'Sem observações salvas';
+    editForm.style.display = 'inline-block';
+  }
+
+  async function deleteObj(c) {
+    const { data, error } = await supabaseC.from('ObjInfo').delete().eq('objCode', c);
+
+    if (error) {
+      alert(`Erro ao deletar objeto: ${error}`);
+      console.log(error);
+      return;
+    }
+
+    editForm.style.display = 'none';
+    dataTableBody.innerHTML = '';
+    loadObjects();
   }
 
   loadObjects();
