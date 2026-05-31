@@ -89,8 +89,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const state = objStateInput.value.trim();
     const obs = objObsInput.value.trim();
     const image = objImageInput.files[0];
-    const imageName = image.name;
-
+    if(image) {
+      const imageName = image.name;
+    }
+    
     if (!name || !code) {
       alert("Insira pelo menos o nome e o código do objeto.");
       return;
