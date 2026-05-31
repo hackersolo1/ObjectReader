@@ -458,15 +458,15 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   async function deleteObj(c) {
-    const { data } = await supabaseC.from('ObjInfo').select('*').eq('objCode', c);
-    const imgN = data[0].img_url.split('/').pop();
+    const { data: d1, error: e1 } = await supabaseC.from('ObjInfo').select('*').eq('objCode', c);
+    const imgN = d1[0].img_url.split('/').pop();
 
-    await supabaseC.from('codeReaderImgFiles').remove(`private/${imgN}`);
-    const { error } = await supabaseC.from('ObjInfo').delete().eq('objCode', c);
+    const {data: d2, error: e2} = await supabaseC.storage.from('codeReaderImgFiles').remove(`private/${imgN}`);
+    const { data: d3, error: e3 } = await supabaseC.from('ObjInfo').delete().eq('objCode', c);
 
-    if (error) {
-      alert(`Erro ao deletar objeto: ${error}`);
-      console.log(error);
+    if (e1 || e2 || e3) {
+      alert(`Erro ao deletar objeto: ${e1 || e2 || e3}`);
+      console.log(e1 || e2 || e3);
       return;
     }
 
