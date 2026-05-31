@@ -88,8 +88,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const local = objLocalInput.value.trim();
     const state = objStateInput.value.trim();
     const obs = objObsInput.value.trim();
-    const image = objImageInput.files[0] || null;
-    const imageName = image.name || null;
+    const image = objImageInput.files[0];
+    const imageName = image.name;
 
     if (!name || !code) {
       alert("Insira pelo menos o nome e o código do objeto.");
@@ -321,48 +321,79 @@ document.addEventListener("DOMContentLoaded", () => {
   let imgn = null;
 
   async function saveObj(name, code, local, state, obs, imageName, image) {
-    const { data: upoloadData, error: uploadError } = await supabaseC.storage
-      .from("codeReaderImgFiles")
-      .upload(`private/${imageName}`, image);
+    if (imageName || image) {
 
-    if (uploadError) {
-      alert(`Erro ao salvar imagem: ${uploadError}`);
-      return;
-    }
+      const { data: upoloadData, error: uploadError } = await supabaseC.storage
+        .from("codeReaderImgFiles")
+        .upload(`private/${imageName}`, image);
 
-    const { data: urlData } = await supabaseC.storage
-      .from("codeReaderImgFiles")
-      .getPublicUrl(`private/${imageName}`);
-    if (urlData) {
-      imgn = urlData.publicUrl;
-    }
+      if (uploadError) {
+        alert(`Erro ao salvar imagem: ${uploadError}`);
+        return;
+      }
 
-    const { error } = await supabaseC.from("ObjInfo").insert({
-      objCode: code,
-      objName: name,
-      objState: state || "Descinhecido",
-      objLocal: local || "Desconhecido",
-      objObs: obs || "Sem observações",
-      img_url: imgn || "Sem imagem",
-    });
-    if (error) {
-      console.log(error);
-      alert(`Erro ao salvar o objeto. ${error}`);
+      const { data: urlData } = await supabaseC.storage
+        .from("codeReaderImgFiles")
+        .getPublicUrl(`private/${imageName}`);
+      if (urlData) {
+        imgn = urlData.publicUrl;
+      }
+
+      const { error } = await supabaseC.from("ObjInfo").insert({
+        objCode: code,
+        objName: name,
+        objState: state || "Descinhecido",
+        objLocal: local || "Desconhecido",
+        objObs: obs || "Sem observações",
+        img_url: imgn || "Sem imagem",
+      });
+      if (error) {
+        console.log(error);
+        alert(`Erro ao salvar o objeto. ${error}`);
+      } else {
+        addForm.style.display = "none";
+
+        objNameInput.value = "";
+        objCodeInput.value = "";
+        objLocalInput.value = "";
+        objObsInput.value = "";
+
+        dataTableBody.innerHTML = "";
+        dataList.innerHTML = '';
+        loadObjects();
+
+        btnSave.innerHTML = '<i data-lucide="save"></i> Salvar item'
+        btnSave.style = "opacity: 1; cursor: cursor";
+        btnSave.disabled = false;
+      }
     } else {
-      addForm.style.display = "none";
+      const { error } = await supabaseC.from("ObjInfo").insert({
+        objCode: code,
+        objName: name,
+        objState: state || "Descinhecido",
+        objLocal: local || "Desconhecido",
+        objObs: "Sem observações",
+        img_url: "Sem imagem",
+      });
+      if (error) {
+        console.log(error);
+        alert(`Erro ao salvar o objeto. ${error}`);
+      } else {
+        addForm.style.display = "none";
 
-      objNameInput.value = "";
-      objCodeInput.value = "";
-      objLocalInput.value = "";
-      objObsInput.value = "";
+        objNameInput.value = "";
+        objCodeInput.value = "";
+        objLocalInput.value = "";
+        objObsInput.value = "";
 
-      dataTableBody.innerHTML = "";
-      dataList.innerHTML = '';
-      loadObjects();
+        dataTableBody.innerHTML = "";
+        dataList.innerHTML = '';
+        loadObjects();
 
-      btnSave.innerHTML = '<i data-lucide="save"></i> Salvar item'
-      btnSave.style = "opacity: 1; cursor: cursor";
-      btnSave.disabled = false;
+        btnSave.innerHTML = '<i data-lucide="save"></i> Salvar item'
+        btnSave.style = "opacity: 1; cursor: cursor";
+        btnSave.disabled = false;
+      }
     }
   }
 
