@@ -182,6 +182,14 @@ document.addEventListener("DOMContentLoaded", () => {
     if (error) {
       console.log(error);
     }
+
+    btnSaveEdit.innerHTML = '<i data-lucide="save"></i> Atualizar item'
+    btnSaveEdit.style = "opacity: 1; cursor: cursor";
+    btnSaveEdit.disabled = false;
+
+    btnSaveEdit.innerHTML = '<i data-lucide="save"></i> Atualizar item'
+    btnSaveEdit.style = "opacity: 1; cursor: cursor";
+    btnSaveEdit.disabled = false;
   }
 
   function desktopRender(d) {
