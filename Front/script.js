@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const state = objStateInput.value.trim();
     const obs = objObsInput.value.trim();
     const image = objImageInput.files[0];
-    
+
     if (image) {
       imageName = image.name;
     } else {
@@ -353,7 +353,8 @@ document.addEventListener("DOMContentLoaded", () => {
         objState: state || "Descinhecido",
         objLocal: local || "Desconhecido",
         objObs: obs || "Sem observações",
-        img_url: imgn || "Sem imagem",
+        img_url: imgn,
+        img_name: imageName
       });
       if (error) {
         console.log(error);
@@ -383,6 +384,7 @@ document.addEventListener("DOMContentLoaded", () => {
         objLocal: local || "Desconhecido",
         objObs: "Sem observações",
         img_url: "Sem imagem",
+        img_name: 'Sem nome de imagem'
       });
       if (error) {
         console.log(error);
@@ -459,9 +461,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function deleteObj(c) {
     const { data: d1, error: e1 } = await supabaseC.from('ObjInfo').select('*').eq('objCode', c);
-    const imgN = encodeURIComponent(d1[0].img_url.split('/').pop());
+    const imgN = d1[0].img_name;
 
-    const {data: d2, error: e2} = await supabaseC.storage.from('codeReaderImgFiles').remove(`private/${imgN}`);
+    const { data: d2, error: e2 } = await supabaseC.storage.from('codeReaderImgFiles').remove(`private/${imgN}`);
     const { data: d3, error: e3 } = await supabaseC.from('ObjInfo').delete().eq('objCode', c);
 
     if (e1 || e2 || e3) {
