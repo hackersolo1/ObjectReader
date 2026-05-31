@@ -91,6 +91,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const image = objImageInput.files[0];
     if(image) {
       const imageName = image.name;
+    } else {
+      imageName = null;
     }
     
     if (!name || !code) {
@@ -323,7 +325,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let imgn = null;
 
   async function saveObj(name, code, local, state, obs, imageName, image) {
-    if (imageName || image) {
+    if (imageName != null && image) {
 
       const { data: upoloadData, error: uploadError } = await supabaseC.storage
         .from("codeReaderImgFiles")
