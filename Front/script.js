@@ -89,19 +89,19 @@ document.addEventListener("DOMContentLoaded", () => {
     const state = objStateInput.value.trim();
     const obs = objObsInput.value.trim();
     const image = objImageInput.files[0];
-    if(image) {
+    if (image) {
       const imageName = image.name;
     } else {
       imageName = null;
     }
-    
+
     if (!name || !code) {
       alert("Insira pelo menos o nome e o código do objeto.");
       return;
     }
 
     await saveObj(name, code, local, state, obs, imageName, image);
-    btnSave.innerHTML = '<i data-lucide="spin" class="loaderI"></i>'
+    btnSave.innerHTML = '<i data-lucide="loader-circle" class="loaderI"></i>'
     btnSave.style = "opacity: 0.5; cursor: not-allowed";
     btnSave.disabled = true;
   });
@@ -117,7 +117,7 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log(oldC);
 
     await updateObjInfo(oldC, name, code, local, state, obs);
-    btnSaveEdit.innerHTML = '<i data-lucide="spin" class="loaderI"></i>'
+    btnSaveEdit.innerHTML = '<i data-lucide="loader-circle" class="loaderI"></i>'
     btnSaveEdit.style = "opacity: 0.5; cursor: not-allowed";
     btnSaveEdit.disabled = true;
   });
@@ -399,6 +399,9 @@ document.addEventListener("DOMContentLoaded", () => {
         btnSave.disabled = false;
       }
     }
+    btnSave.innerHTML = '<i data-lucide="save"></i> Salvar item'
+    btnSave.style = "opacity: 1; cursor: cursor";
+    btnSave.disabled = false;
   }
 
   async function updateObjInfo(oldC, name, code, local, state, obs) {
