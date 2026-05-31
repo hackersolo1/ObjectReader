@@ -567,6 +567,16 @@ body {
     line-height: 1.3;
 }
 
+.loaderI {
+    animation: spin 3s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 /* =============================================
    RECENT ITEMS
    ============================================= */

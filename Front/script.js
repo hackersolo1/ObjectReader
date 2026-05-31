@@ -47,7 +47,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnSaveEdit = document.getElementById('btnSaveEdit');
 
   btnAddItem.addEventListener("click", () => {
-    addForm.style.display = "block";
+    addForm.style.display = "inline-block";
+    editForm.style.display = 'none';
   });
 
   goToScanner.addEventListener("click", () => {
@@ -96,6 +97,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     await saveObj(name, code, local, state, obs, imageName, image);
+    btnSave.innerHTML = '<i data-lucide="spin" class="loaderI"></i>'
+    btnSave.style = "opacity: 0.5; cursor: not-allowed";
+    btnSave.disabled = true;
   });
 
   let oldC = null;
@@ -109,6 +113,9 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log(oldC);
 
     await updateObjInfo(oldC, name, code, local, state, obs);
+    btnSaveEdit.innerHTML = '<i data-lucide="spin" class="loaderI"></i>'
+    btnSaveEdit.style = "opacity: 0.5; cursor: not-allowed";
+    btnSaveEdit.disabled = true;
   });
 
   pages.forEach((p) => {
@@ -352,6 +359,10 @@ document.addEventListener("DOMContentLoaded", () => {
       dataTableBody.innerHTML = "";
       dataList.innerHTML = '';
       loadObjects();
+
+      btnSave.innerHTML = '<i data-lucide="save"></i> Salvar item'
+      btnSave.style = "opacity: 1; cursor: cursor";
+      btnSave.disabled = false;
     }
   }
 
@@ -376,6 +387,9 @@ document.addEventListener("DOMContentLoaded", () => {
     dataList.innerHTML = '';
     loadObjects();
 
+    btnSaveEdit.innerHTML = '<i data-lucide="save"></i> Atualizar item'
+    btnSaveEdit.style = "opacity: 1; cursor: cursor";
+    btnSaveEdit.disabled = false;
   }
 
   async function editObjShow(c) {
@@ -394,6 +408,7 @@ document.addEventListener("DOMContentLoaded", () => {
     objStateInputEdit.value = objInfo.objState;
     objObsInputEdit.value = objInfo.objObs || 'Sem observações salvas';
     editForm.style.display = 'inline-block';
+    addForm.style.display = 'none';
   }
 
   async function deleteObj(c) {
