@@ -100,10 +100,10 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    await saveObj(name, code, local, state, obs, imageName, image);
     btnSave.innerHTML = '<i data-lucide="loader-circle" class="loaderI"></i>'
     btnSave.style = "opacity: 0.5; cursor: not-allowed";
     btnSave.disabled = true;
+    await saveObj(name, code, local, state, obs, imageName, image);
   });
 
   let oldC = null;
@@ -116,10 +116,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     console.log(oldC);
 
-    await updateObjInfo(oldC, name, code, local, state, obs);
     btnSaveEdit.innerHTML = '<i data-lucide="loader-circle" class="loaderI"></i>'
     btnSaveEdit.style = "opacity: 0.5; cursor: not-allowed";
     btnSaveEdit.disabled = true;
+    await updateObjInfo(oldC, name, code, local, state, obs);
   });
 
   pages.forEach((p) => {
@@ -182,14 +182,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (error) {
       console.log(error);
     }
-
-    btnSaveEdit.innerHTML = '<i data-lucide="save"></i> Atualizar item'
-    btnSaveEdit.style = "opacity: 1; cursor: cursor";
-    btnSaveEdit.disabled = false;
-
-    btnSaveEdit.innerHTML = '<i data-lucide="save"></i> Atualizar item'
-    btnSaveEdit.style = "opacity: 1; cursor: cursor";
-    btnSaveEdit.disabled = false;
   }
 
   function desktopRender(d) {
@@ -375,7 +367,7 @@ document.addEventListener("DOMContentLoaded", () => {
         loadObjects();
 
         btnSave.innerHTML = '<i data-lucide="save"></i> Salvar item'
-        btnSave.style = "opacity: 1; cursor: cursor";
+        btnSave.style = "opacity: 1; cursor: pointer";
         btnSave.disabled = false;
       }
     } else {
@@ -408,7 +400,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
     btnSave.innerHTML = '<i data-lucide="save"></i> Salvar item'
-    btnSave.style = "opacity: 1; cursor: cursor";
+    btnSave.style = "opacity: 1; cursor: pointer";
     btnSave.disabled = false;
   }
 
@@ -434,7 +426,7 @@ document.addEventListener("DOMContentLoaded", () => {
     loadObjects();
 
     btnSaveEdit.innerHTML = '<i data-lucide="save"></i> Atualizar item'
-    btnSaveEdit.style = "opacity: 1; cursor: cursor";
+    btnSaveEdit.style = "opacity: 1; cursor: pointerd";
     btnSaveEdit.disabled = false;
   }
 
