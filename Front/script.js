@@ -81,7 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 
-
+  let imageName = null;
   btnSave.addEventListener("click", async () => {
     const name = objNameInput.value.trim();
     const code = objCodeInput.value.trim();
@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const state = objStateInput.value.trim();
     const obs = objObsInput.value.trim();
     const image = objImageInput.files[0];
-    const imageName = null;
+    
     if (image) {
       imageName = image.name;
     } else {
