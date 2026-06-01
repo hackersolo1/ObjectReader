@@ -135,7 +135,7 @@ document.addEventListener("DOMContentLoaded", () => {
       oie.style = 'opacity: 0.5; cursor: not-allowed';
       oie.disabled = true;
     });
-    await updateObjInfo(oldC, name, code, local, state, obs, image, imageName);
+    await updateObjInfo(oldC, name, code, local, state, obs, imageName, image);
   });
 
   pages.forEach((p) => {
@@ -486,7 +486,7 @@ document.addEventListener("DOMContentLoaded", () => {
         objName: name,
         objState: state || 'Desconhecido',
         objLocal: local || 'Desconhecido',
-        objObs: obs || 'Sem observações'
+        objObs: obs || 'Sem observações',
       }).eq('objCode', oldC);
     }
 
