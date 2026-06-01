@@ -447,7 +447,10 @@ document.addEventListener("DOMContentLoaded", () => {
     [objCodeInput, objImageInput, objLocalInput, objObsInput, objNameInput, objStateInput].forEach((oi) => {
       oi.style = 'opacity: 1; cursor: cursor';
       oi.disabled = false;
+      oi.value = '';
     });
+
+    
   }
 
   let imgNN = null
@@ -503,7 +506,9 @@ document.addEventListener("DOMContentLoaded", () => {
     [objNameInputEdit, objCodeInputEdit, objLocalInputEdit, objStateInputEdit, objObsInputEdit, objImageInputEdit].forEach((oie) => {
       oie.style = 'opacity: 1; cursor: cursor';
       oie.disabled = false;
+      oie.value = '';
     });
+
   }
 
   async function editObjShow(c) {
