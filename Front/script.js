@@ -209,7 +209,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         const tr = document.createElement("tr");
         tr.innerHTML = `
-            <td>
+            <td class="objInfoTable">
                 <span class="table-item-emoji">${ih}</span>
                 <span class="table-item-name">${d.objName}</span>
             </td>

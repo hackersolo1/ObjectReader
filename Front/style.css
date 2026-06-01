@@ -744,6 +744,13 @@ body {
     background: var(--gray-50);
 }
 
+.objInfoTable {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 5px
+}
+
 .table-item-name {
     font-weight: 600;
     color: var(--gray-800);
@@ -754,7 +761,8 @@ body {
 }
 
 .table-item-emoji img {
-    width: 20px;
+    width: 30px;
+    height: 30px;
     object-fit: cover;
     border-radius: 25%;
 }
