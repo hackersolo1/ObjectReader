@@ -450,6 +450,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  let imgNN = null
   async function updateObjInfo(oldC, name, code, local, state, obs, imageName, image) {
     if (image && imageName != null) {
       const { data: d1, error: e1 } = await supabaseC.from('ObjInfo').select('*').eq('objCode', oldC);
@@ -461,7 +462,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const { data: d4, error: e4 } = await supabaseC.storage.from('codeReaderImgFiles').getPublicUrl(`private/${imageName}`);
       if (d4) {
-        let imgNN = d4.publicUrl;
+        imgNN = d4.publicUrl;
       }
 
       const { data: d5, error: e5 } = await supabaseC.from('ObjInfo').update({
