@@ -557,13 +557,14 @@ document.addEventListener("DOMContentLoaded", () => {
   // ==========================================
 
   // Capturando os botões da interface
+  const scannerBadge = document.getElementById('scannerBadge');
   const btnStart = document.getElementById("btnStart");
   const btnStop = document.getElementById("btnStop");
   const resultSpan = document.getElementById("resultSpan");
   const resultDisplay = document.getElementById("objPanel");
   const btnUse = document.getElementById("btnUse");
   const goToBellow = document.getElementById('goToBellow');
-
+  
   const objPanel = document.getElementById("objPanel");
   const objPanelName = document.getElementById("objName");
   const objPanelCode = document.getElementById("objCode");
@@ -617,6 +618,7 @@ document.addEventListener("DOMContentLoaded", () => {
       objPanel.style.display = "none";
       statusMsg.innerText = "Aponte para o código...";
       video.style.display = "block";
+      scannerBadge.classList.add('active');
 
       // Loop que tenta ler o código a cada 500ms
       scanInterval = setInterval(async () => {
@@ -650,6 +652,7 @@ document.addEventListener("DOMContentLoaded", () => {
     btnStop.style.display = "none";
     video.style.display = "none";
     idleScreen.style.display = "flex";
+    scannerBadge.classList.remove('active');
   }
 
   // Eventos dos botões

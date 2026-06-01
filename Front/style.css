@@ -959,6 +959,7 @@ button {
     font-size: 12px;
     font-weight: 600;
     color: var(--gray-600);
+    transition: all var(--transition);
 }
 
 .badge-dot {
@@ -967,6 +968,7 @@ button {
     border-radius: 50%;
     background: var(--gray-400);
     display: inline-block;
+    transition: all var(--transition);
 }
 
 .scanner-status-badge.active .badge-dot {
