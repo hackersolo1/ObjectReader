@@ -476,6 +476,7 @@ body {
 #editForm select,
 #editForm textarea {
     width: 100%;
+    transition: all var(--transition);
 }
 
 .section-header {
@@ -612,6 +613,13 @@ body {
     font-size: 22px;
 }
 
+.item-img img {
+    width: 52px;
+    height: 53px;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
 .item-info {
     flex: 1;
     min-width: 0;
@@ -743,6 +751,12 @@ body {
 
 .table-item-emoji {
     margin-right: 8px;
+}
+
+.table-item-emoji img {
+    width: 20px;
+    object-fit: cover;
+    border-radius: 12px;
 }
 
 .table-code {
@@ -1244,7 +1258,7 @@ button {
     font-family: 'DM Sans', sans-serif;
     color: var(--gray-800);
     background: white;
-    transition: border-color var(--transition);
+    transition: all var(--transition);
     outline: none;
     width: 100%;
 }

@@ -44,6 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const objLocalInputEdit = document.getElementById('objLocalInputEdit');
   const objStateInputEdit = document.getElementById('objStateInputEdit');
   const objObsInputEdit = document.getElementById('objObsInputEdit');
+  const objImageInputEdit = document.getElementById('objImageInputEdit');
   const btnSaveEdit = document.getElementById('btnSaveEdit');
 
   btnAddItem.addEventListener("click", () => {
@@ -105,6 +106,10 @@ document.addEventListener("DOMContentLoaded", () => {
     lucide.createIcons();
     btnSave.style = "opacity: 0.5; cursor: not-allowed";
     btnSave.disabled = true;
+    [objCodeInput, objImageInput, objLocalInput, objObsInput, objNameInput, objStateInput].forEach((oi) => {
+      oi.style = 'opacity: 0.5; cursor: not-allowed';
+      oi.disabled = true;
+    });
     await saveObj(name, code, local, state, obs, imageName, image);
   });
 
@@ -115,14 +120,22 @@ document.addEventListener("DOMContentLoaded", () => {
     const local = objLocalInputEdit.value.trim();
     const state = objStateInputEdit.value.trim();
     const obs = objObsInputEdit.value.trim();
-
-    console.log(oldC);
+    const image = objImageInputEdit.files[0];
+    if (image) {
+      imageName = image.name;
+    } else {
+      imageName = null;
+    }
 
     btnSaveEdit.innerHTML = '<i data-lucide="loader-circle" class="loaderI"></i>';
     lucide.createIcons();
     btnSaveEdit.style = "opacity: 0.5; cursor: not-allowed";
     btnSaveEdit.disabled = true;
-    await updateObjInfo(oldC, name, code, local, state, obs);
+    [objNameInputEdit, objCodeInputEdit, objLocalInputEdit, objStateInputEdit, objObsInputEdit, objImageInputEdit].forEach((oie) => {
+      oie.style = 'opacity: 0.5; cursor: not-allowed';
+      oie.disabled = true;
+    });
+    await updateObjInfo(oldC, name, code, local, state, obs, image, imageName);
   });
 
   pages.forEach((p) => {
@@ -188,10 +201,16 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function desktopRender(d) {
+    var ih = null;
+    if (d.img_url) {
+      ih = `<img src="${d.img_url}" alt="Imagem do objeto" class="image_tumbnail"/>`
+    } else {
+      ih = '📦';
+    }
     const tr = document.createElement("tr");
     tr.innerHTML = `
             <td>
-                <span class="table-item-emoji">📦</span>
+                <span class="table-item-emoji">${ih}</span>
                 <span class="table-item-name">${d.objName}</span>
             </td>
             <td>${d.objCode}</td>
@@ -241,10 +260,16 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function mobileRender(d) {
+    var ih = null;
+    if (d.img_url) {
+      ih = `<img src="${d.img_url}" alt="Imagem do objeto" class="image_tumbnail"/>`
+    } else {
+      ih = '📦';
+    }
     const div = document.createElement("div");
     div.classList.add("recent-item");
     div.innerHTML = `
-            <div class="item-img">📦</div>
+            <div class="item-img">${ih}</div>
             <div class="item-info">
                 <div class="item-name">${d.objName}</div>
                 <div class="item-meta">${d.objLocal} | ${d.objState}</div>
@@ -375,6 +400,10 @@ document.addEventListener("DOMContentLoaded", () => {
         lucide.createIcons();
         btnSave.style = "opacity: 1; cursor: pointer";
         btnSave.disabled = false;
+        [objCodeInput, objImageInput, objLocalInput, objObsInput, objNameInput, objStateInput].forEach((oi) => {
+          oi.style = 'opacity: 1; cursor: cursor';
+          oi.disabled = false;
+        });
       }
     } else {
       const { error } = await supabaseC.from("ObjInfo").insert({
@@ -405,27 +434,59 @@ document.addEventListener("DOMContentLoaded", () => {
         lucide.createIcons();
         btnSave.style = "opacity: 1; cursor: cursor";
         btnSave.disabled = false;
+        [objCodeInput, objImageInput, objLocalInput, objObsInput, objNameInput, objStateInput].forEach((oi) => {
+          oi.style = 'opacity: 1; cursor: cursor';
+          oi.disabled = false;
+        });
       }
     }
     btnSave.innerHTML = '<i data-lucide="save"></i> Salvar item';
     lucide.createIcons();
     btnSave.style = "opacity: 1; cursor: pointer";
     btnSave.disabled = false;
+    [objCodeInput, objImageInput, objLocalInput, objObsInput, objNameInput, objStateInput].forEach((oi) => {
+      oi.style = 'opacity: 1; cursor: cursor';
+      oi.disabled = false;
+    });
   }
 
-  async function updateObjInfo(oldC, name, code, local, state, obs) {
-    const { data, error } = await supabaseC.from('ObjInfo').update({
-      objCode: code,
-      objName: name,
-      objState: state || 'Desconhecido',
-      objLocal: local || 'Desconhecido',
-      objObs: obs || 'Sem observações'
-    }).eq('objCode', oldC);
+  async function updateObjInfo(oldC, name, code, local, state, obs, imageName, image) {
+    if (image && imageName != null) {
+      const { data: d1, error: e1 } = await supabaseC.from('ObjInfo').select('*').eq('objCode', oldC);
+      const imgN = d1[0].img_name;
 
-    if (error) {
-      alert(`Não foi possível atualizar as informações do objeto: ${error}`);
-      console.log(error);
-      return;
+      const { data: d2, error: e2 } = await supabaseC.storage.from('codeReaderImgFiles').remove(`private/${imgN}`);
+
+      const { data: d3, error: e3 } = await supabaseC.storage.from('codeReaderImgFiles').upload(`private/${imageName}`, image);
+
+      const { data: d4, error: e4 } = await supabaseC.storage.from('codeReaderImgFiles').getPublicUrl(`private/${imageName}`);
+      if (d4) {
+        let imgNN = d4.publicUrl;
+      }
+
+      const { data: d5, error: e5 } = await supabaseC.from('ObjInfo').update({
+        objCode: code,
+        objName: name,
+        objState: state || 'Desconhecido',
+        objLocal: local || 'Desconhecido',
+        objObs: obs || 'Sem observações',
+        img_url: imgNN,
+        img_name: imageName
+      }).eq('objCode', oldC);
+
+      if (e1 || e2 || e3 || e4 || e5) {
+        alert(`Não foi possível atualizar as informações do objeto: ${e1 || e2 || e3 || e4 || e5}`);
+        console.log(e1 || e2 || e3 || e4 || e5);
+        return;
+      }
+    } else {
+      const { data: d5, error: e5 } = await supabaseC.from('ObjInfo').update({
+        objCode: code,
+        objName: name,
+        objState: state || 'Desconhecido',
+        objLocal: local || 'Desconhecido',
+        objObs: obs || 'Sem observações'
+      }).eq('objCode', oldC);
     }
 
     editForm.style.display = 'none';
@@ -438,6 +499,10 @@ document.addEventListener("DOMContentLoaded", () => {
     lucide.createIcons();
     btnSaveEdit.style = "opacity: 1; cursor: pointerd";
     btnSaveEdit.disabled = false;
+    [objNameInputEdit, objCodeInputEdit, objLocalInputEdit, objStateInputEdit, objObsInputEdit, objImageInputEdit].forEach((oie) => {
+      oie.style = 'opacity: 1; cursor: cursor';
+      oie.disabled = false;
+    });
   }
 
   async function editObjShow(c) {
