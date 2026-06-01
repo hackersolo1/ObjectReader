@@ -756,7 +756,7 @@ body {
 .table-item-emoji img {
     width: 20px;
     object-fit: cover;
-    border-radius: 12px;
+    border-radius: 25%;
 }
 
 .table-code {
