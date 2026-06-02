@@ -542,7 +542,7 @@ document.addEventListener("DOMContentLoaded", () => {
         await loadObjects();
     }
 
-    "loadObjects();
+    loadObjects();
     lucide.createIcons();
     loadScanner();
 
