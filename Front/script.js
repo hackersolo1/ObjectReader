@@ -581,12 +581,13 @@ document.addEventListener("DOMContentLoaded", () => {
             "Seu navegador não suporta leitura nativa. Use o Chrome no Android.";
         statusMsg.style.color = "var(--red-text)";
         btnStart.disabled = true;
+        idleScreen.querySelector('span').textContent = 'Seu navegador não tem suporte para o Scanner.'
 
         [goToScanner, btnStart].forEach((b) => {
             b.style.opacity = "0.5";
             b.style.cursor = "not-allowed";
             b.disabled = true;
-            b.title = "Seu navegador não tem suporte para o Scanner";
+            b.title = "Seu navegador não tem suporte para o Scanner.";
         });
     } else {
         barcodeDetector = new BarcodeDetector({
