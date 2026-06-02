@@ -186,18 +186,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
     async function loadObjects() {
         const { data, error } = await supabaseC.from("ObjInfo").select("*");
+        if (error) {
+            console.log(error);
+            return;
+        }
+
         if (data) {
             statTotal.innerText = data.length;
             statSub.style.display = "none";
+            dataTableBody.innerHTML = '';
+            dataList.innerHTML = '';
+
+            data.forEach((d) => {
+                mobileRender(d);
+                desktopRender(d);
+            });
         }
 
-        data.forEach((d) => {
-            mobileRender(d);
-            desktopRender(d);
-        });
-        if (error) {
-            console.log(error);
-        }
+        
     }
 
     function desktopRender(d) {
@@ -391,10 +397,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 objCodeInput.value = "";
                 objLocalInput.value = "";
                 objObsInput.value = "";
-
-                dataTableBody.innerHTML = "";
-                dataList.innerHTML = '';
-                loadObjects();
+                await loadObjects();
 
                 btnSave.innerHTML = '<i data-lucide="save"></i> Salvar item';
                 lucide.createIcons();
@@ -425,10 +428,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 objCodeInput.value = "";
                 objLocalInput.value = "";
                 objObsInput.value = "";
-
-                dataTableBody.innerHTML = "";
-                dataList.innerHTML = '';
-                loadObjects();
+                await loadObjects();
 
                 btnSave.innerHTML = '<i data-lucide="save"></i> Salvar item';
                 lucide.createIcons();
@@ -494,10 +494,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         editForm.style.display = 'none';
-
-        dataTableBody.innerHTML = '';
-        dataList.innerHTML = '';
-        loadObjects();
+        await loadObjects();
 
         btnSaveEdit.innerHTML = '<i data-lucide="save"></i> Atualizar item';
         lucide.createIcons();
@@ -542,13 +539,10 @@ document.addEventListener("DOMContentLoaded", () => {
             console.log(e1 || e2 || e3);
             return;
         }
-
-        editForm.style.display = 'none';
-        dataTableBody.innerHTML = '';
-        loadObjects();
+        await loadObjects();
     }
 
-    loadObjects();
+    await loadObjects();
     lucide.createIcons();
     loadScanner();
 
