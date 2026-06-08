@@ -50,10 +50,12 @@ document.addEventListener("DOMContentLoaded", () => {
     btnAddItem.addEventListener("click", () => {
         addForm.style.display = "inline-block";
         editForm.style.display = 'none';
+        history.pushState({}, '', `#adicionar-item`);
     });
 
     goToScanner.addEventListener("click", () => {
         document.querySelector('[data-page="scanner"]').click();
+        history.pushState({}, '', `#scanner`);
     });
 
     [iconBtn, bottomIconBtn].forEach((b) => {
@@ -63,12 +65,14 @@ document.addEventListener("DOMContentLoaded", () => {
     [closeForm, cancelForm].forEach((b) => {
         b.addEventListener("click", () => {
             addForm.style.display = "none";
+            history.pushState({}, '', `#dados`);
         });
     });
 
     [closeEditForm, cancelEditForm].forEach((b) => {
         b.addEventListener('click', () => {
             editForm.style.display = 'none';
+            history.pushState({}, '', `#dados`);
         });
     });
 
@@ -145,6 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 e.currentTarget.classList.add("active");
             });
             el = e.currentTarget.dataset.page;
+            history.pushState({}, '', `#${el}`);
             document.querySelectorAll(".app-wrapper .page").forEach((bpa) => {
                 bpa.classList.remove("active");
                 document
@@ -161,7 +166,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 e.currentTarget.classList.add("active");
             });
             el = e.currentTarget.dataset.nav;
-            console.log(el);
+            history.pushState({}, '', `#${el}`);
             document.querySelectorAll(".app-wrapper [data-page]").forEach((bpa) => {
                 bpa.classList.remove("active");
                 document
@@ -203,7 +208,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }
 
-        
+
     }
 
     function desktopRender(d) {
@@ -238,6 +243,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const objCode = e.currentTarget.dataset.code;
                 editObjShow(objCode);
                 oldC = objCode;
+                history.pushState({}, '', `#editar-objeto`);
             });
         });
 
@@ -354,6 +360,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 b.classList.remove("active");
             });
             document.querySelector(`[data-nav="inicio"]`).classList.add("active");
+            history.pushState({}, '', `#inicio`);
         }
     }
 
@@ -580,15 +587,13 @@ document.addEventListener("DOMContentLoaded", () => {
         statusMsg.innerText =
             "Seu navegador não suporta leitura nativa. Use o Chrome no Android.";
         statusMsg.style.color = "var(--red-text)";
-        btnStart.disabled = true;
-        idleScreen.querySelector('span').textContent = 'Seu navegador não tem suporte para o Scanner.'
-
         [goToScanner, btnStart].forEach((b) => {
             b.style.opacity = "0.5";
             b.style.cursor = "not-allowed";
             b.disabled = true;
-            b.title = "Seu navegador não tem suporte para o Scanner.";
+            b.title = "Seu navegador/dispositivo não suporta Scanner";
         });
+        idleScreen.querySelector('span').textContent = 'Seu navegador não tem suporte para o Scanner.'
     } else {
         barcodeDetector = new BarcodeDetector({
             formats: ["ean_13", "code_128", "qr_code", "upc_a"],
@@ -619,6 +624,7 @@ document.addEventListener("DOMContentLoaded", () => {
             statusMsg.innerText = "Aponte para o código...";
             video.style.display = "block";
             scannerBadge.classList.add('active');
+            history.pushState({}, '', '#scanner-ativo');
 
             // Loop que tenta ler o código a cada 500ms
             scanInterval = setInterval(async () => {
@@ -653,6 +659,7 @@ document.addEventListener("DOMContentLoaded", () => {
         video.style.display = "none";
         idleScreen.style.display = "flex";
         scannerBadge.classList.remove('active');
+        history.pushState({}, '', '#scanner-inativo');
     }
 
     // Eventos dos botões
