@@ -248,7 +248,6 @@ document.addEventListener("DOMContentLoaded", () => {
             b.addEventListener('click', (e) => {
                 const objCode = e.currentTarget.dataset.code;
                 deleteObj(objCode);
-                saveHistory(userEmail, d.objName, 'Deleção');
             });
         });
 
@@ -569,6 +568,9 @@ document.addEventListener("DOMContentLoaded", () => {
     async function deleteObj(c) {
         const { data: d1, error: e1 } = await supabaseC.from('ObjInfo').select('*').eq('objCode', c);
         const imgN = d1[0].img_name;
+        const name = d1[0].objName;
+
+        await saveHistory(userEmail, name, 'Deleção');
 
         const { data: d2, error: e2 } = await supabaseC.storage.from('codeReaderImgFiles').remove(`private/${imgN}`);
         const { data: d3, error: e3 } = await supabaseC.from('ObjInfo').delete().eq('objCode', c);
