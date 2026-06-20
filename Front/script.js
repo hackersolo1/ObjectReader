@@ -213,7 +213,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function desktopRender(d) {
-        console.log(d);
         var ih = null;
         ih = d.img_url != 'Sem imagem' ? `<img src="${d.img_url}" alt="Imagem do objeto" class="image_tumbnail"/>` : '📦';
         const tr = document.createElement("tr");
@@ -289,13 +288,13 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     async function historyRender() {
-        const {data, error} = await supabaseC.from('history_table').select('*');
-        if(error) {
+        const { data, error } = await supabaseC.from('history_table').select('*');
+        if (error) {
             console.log(`Erro ao carregar a tabela de histórico: ${error}`);
             return;
         };
 
-        if(data) {
+        if (data) {
             dataHistoryBody.innerHTML = '';
             data.forEach((d) => {
                 const tr = document.createElement('tr');
@@ -583,14 +582,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     async function saveHistory(date, usrEmail, name, type) {
-        const {data, error} = await supabaseC.from('history_table').insert({
+        const { data, error } = await supabaseC.from('history_table').insert({
             modified_at: date,
             modified_by: usrEmail,
             objName: name,
             modify_type: type
         });
 
-        if(error) {
+        if (error) {
             console.log(`Erro ao salvar informações no histórico: ${error}`);
         }
 
