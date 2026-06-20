@@ -462,7 +462,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 objLocalInput.value = "";
                 objObsInput.value = "";
                 await loadObjects();
-                await saveHistory(new Date().toISOString(), userEmail, name, 'Adição');
+                await saveHistory(userEmail, name, 'Adição');
 
                 btnSave.innerHTML = '<i data-lucide="save"></i> Salvar item';
                 lucide.createIcons();
@@ -529,7 +529,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }).eq('objCode', oldC);
         }
 
-        await saveHistory(new Date().toISOString(), userEmail, name, 'Edição');
+        await saveHistory(userEmail, name, 'Edição');
 
         editForm.style.display = 'none';
         await loadObjects();
@@ -577,11 +577,13 @@ document.addEventListener("DOMContentLoaded", () => {
             console.log(e1 || e2 || e3);
             return;
         }
-        saveHistory(new Date().toISOString(), userEmail, d1[0].objName, 'Deleção');
+        saveHistory(userEmail, d1[0].objName, 'Deleção');
         await loadObjects();
     }
 
-    async function saveHistory(date, usrEmail, name, type) {
+    async function saveHistory(usrEmail, name, type) {
+        const dateD = new Date().toISOString().split('T')[0].split('-');
+        const date = `${dateD[2]}/${dateD[1]}/${dateD[0]}`;
         const { data, error } = await supabaseC.from('history_table').insert({
             modified_at: date,
             modified_by: usrEmail,
