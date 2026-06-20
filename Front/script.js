@@ -462,6 +462,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 objLocalInput.value = "";
                 objObsInput.value = "";
                 await loadObjects();
+                await saveHistory(new Date().toISOString(), userEmail, name, 'Adição');
 
                 btnSave.innerHTML = '<i data-lucide="save"></i> Salvar item';
                 lucide.createIcons();
@@ -474,7 +475,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-        saveHistory(new Date().toISOString(), userEmail, name, 'Adição');
 
         btnSave.innerHTML = '<i data-lucide="save"></i> Salvar item';
         lucide.createIcons();
@@ -529,7 +529,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }).eq('objCode', oldC);
         }
 
-        saveHistory(new Date().toISOString(), userEmail, name, 'Edição');
+        await saveHistory(new Date().toISOString(), userEmail, name, 'Edição');
 
         editForm.style.display = 'none';
         await loadObjects();
