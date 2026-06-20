@@ -248,6 +248,7 @@ document.addEventListener("DOMContentLoaded", () => {
             b.addEventListener('click', (e) => {
                 const objCode = e.currentTarget.dataset.code;
                 deleteObj(objCode);
+                saveHistory(userEmail, d.objName, 'Deleção');
             });
         });
 
@@ -294,8 +295,8 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         };
 
+        dataHistoryBody.innerHTML = '';
         if (data) {
-            dataHistoryBody.innerHTML = '';
             data.forEach((d) => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
@@ -577,7 +578,6 @@ document.addEventListener("DOMContentLoaded", () => {
             console.log(e1 || e2 || e3);
             return;
         }
-        await saveHistory(userEmail, d1[0].objName, 'Deleção');
         await loadObjects();
     }
 
