@@ -213,12 +213,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function desktopRender(d) {
+        console.log(d);
         var ih = null;
-        if (d.img_url) {
-            ih = `<img src="${d.img_url}" alt="Imagem do objeto" class="image_tumbnail"/>`
-        } else {
-            ih = '📦';
-        }
+        ih = d.img_url != 'Sem imagem' ? `<img src="${d.img_url}" alt="Imagem do objeto" class="image_tumbnail"/>` : '📦';
         const tr = document.createElement("tr");
         tr.innerHTML = `
             <td class="objInfoTable">
