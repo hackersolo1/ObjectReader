@@ -247,7 +247,7 @@ document.addEventListener("DOMContentLoaded", () => {
         document.querySelectorAll('.deleteObjBtn').forEach((b) => {
             b.addEventListener('click', (e) => {
                 const objCode = e.currentTarget.dataset.code;
-                deleteObj(objCode);
+                deleteObj(objCode, d.objName);
             });
         });
 
@@ -565,21 +565,20 @@ document.addEventListener("DOMContentLoaded", () => {
         addForm.style.display = 'none';
     }
 
-    async function deleteObj(c) {
+    async function deleteObj(c, name) {
         const { data: d1, error: e1 } = await supabaseC.from('ObjInfo').select('*').eq('objCode', c);
         const imgN = d1[0].img_name;
-        const name = d1[0].objName;
 
-        await saveHistory(userEmail, name, 'Deleção');
-
+        
         const { data: d2, error: e2 } = await supabaseC.storage.from('codeReaderImgFiles').remove(`private/${imgN}`);
         const { data: d3, error: e3 } = await supabaseC.from('ObjInfo').delete().eq('objCode', c);
-
+        
         if (e1 || e2 || e3) {
             alert(`Erro ao deletar objeto: ${e1 || e2 || e3}`);
             console.log(e1 || e2 || e3);
             return;
         }
+        await saveHistory(userEmail, name, 'Deleção');
         await loadObjects();
     }
 
@@ -598,7 +597,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         historyRender();
-        console.log('Histórico atualizado com sucesso!');
     }
 
     loadObjects();
