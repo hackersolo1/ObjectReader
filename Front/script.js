@@ -480,12 +480,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         saveHistory(new Date().toISOString(), userEmail, name, 'Adição');
 
-        if (error) {
-            console.log(`Erro ao salvar objeto no histórico: ${error}`);
-            alert(`Erro ao salvar objeto no histórico: ${error}`);
-            return;
-        };
-
         btnSave.innerHTML = '<i data-lucide="save"></i> Salvar item';
         lucide.createIcons();
         btnSave.style = "opacity: 1; cursor: pointer";
