@@ -577,7 +577,7 @@ document.addEventListener("DOMContentLoaded", () => {
             console.log(e1 || e2 || e3);
             return;
         }
-        saveHistory(userEmail, d1[0].objName, 'Deleção');
+        await saveHistory(userEmail, d1[0].objName, 'Deleção');
         await loadObjects();
     }
 
