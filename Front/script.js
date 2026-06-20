@@ -598,6 +598,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         historyRender();
+        console.log('Histórico atualizado com sucesso!');
     }
 
     loadObjects();
