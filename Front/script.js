@@ -46,6 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const objObsInputEdit = document.getElementById('objObsInputEdit');
     const objImageInputEdit = document.getElementById('objImageInputEdit');
     const btnSaveEdit = document.getElementById('btnSaveEdit');
+    const dataHistoryBody = document.getElementById('dataHistoryBody');
 
     btnAddItem.addEventListener("click", () => {
         addForm.style.display = "inline-block";
@@ -288,8 +289,35 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
         `;
         dataList.appendChild(div);
-    }
+    };
 
+    async function historyRender() {
+        const {data, error} = await supabaseC.from('history_table').select('*');
+        if(error) {
+            console.log(`Erro ao carregar a tabela de histórico: ${error}`);
+            return;
+        };
+
+        if(data) {
+            dataHistoryBody.innerHTML = '';
+            data.forEach((d) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="objInfoTable">
+                        <span class="table-item-name">${d.objName}</span>
+                    </td>
+                    <td>${d.modified_at}</td>
+                    <td>${d.modified_by}</td>
+                    <td>${d.modify_type}</td>
+                `;
+
+                dataHistoryBody.appendChild(tr);
+            });
+        };
+    };
+
+
+    let userEmail = null;
     supabaseC.auth.onAuthStateChange((event, session) => {
         if (session && session.user) {
             const user = session.user;
@@ -299,6 +327,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 name: user.user_metadata.full_name || user.user_metadata.name,
                 avatar_url: user.user_metadata.avatar_url || user.user_metadata.picture,
             };
+            userEmail = userInfo.email;
 
             document.getElementById("headerAvatarIcon").style.display = "none";
             document.getElementById("AvatarIconBottom").style.display = "none";
@@ -428,6 +457,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (error) {
                 console.log(error);
                 alert(`Erro ao salvar o objeto. ${error}`);
+                return;
             } else {
                 addForm.style.display = "none";
 
@@ -447,6 +477,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
             }
         }
+
+        saveHistory(new Date().toISOString(), userEmail, name, 'Adição');
+
+        if (error) {
+            console.log(`Erro ao salvar objeto no histórico: ${error}`);
+            alert(`Erro ao salvar objeto no histórico: ${error}`);
+            return;
+        };
+
         btnSave.innerHTML = '<i data-lucide="save"></i> Salvar item';
         lucide.createIcons();
         btnSave.style = "opacity: 1; cursor: pointer";
@@ -500,6 +539,8 @@ document.addEventListener("DOMContentLoaded", () => {
             }).eq('objCode', oldC);
         }
 
+        saveHistory(new Date().toISOString(), userEmail, name, 'Edição');
+
         editForm.style.display = 'none';
         await loadObjects();
 
@@ -546,12 +587,29 @@ document.addEventListener("DOMContentLoaded", () => {
             console.log(e1 || e2 || e3);
             return;
         }
+        saveHistory(new Date().toISOString(), userEmail, d1[0].objName, 'Deleção');
         await loadObjects();
+    }
+
+    async function saveHistory(date, usrEmail, name, type) {
+        const {data, error} = await supabaseC.from('history_table').insert({
+            modified_at: date,
+            modified_by: usrEmail,
+            objName: name,
+            modify_type: type
+        });
+
+        if(error) {
+            console.log(`Erro ao salvar informações no histórico: ${error}`);
+        }
+
+        historyRender();
     }
 
     loadObjects();
     lucide.createIcons();
     loadScanner();
+    historyRender();
 
     // ==========================================
     // SISTEMA DE SCANNER (CÂMERA)
