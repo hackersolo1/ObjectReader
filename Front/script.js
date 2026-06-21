@@ -182,7 +182,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 quality: 0.98
             },
             html2canvas: {
-                scale: 3,
+                scale: 2,
                 useCORS: true
             },
             jsPDF: {
@@ -379,13 +379,14 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     async function historyRender() {
+        dataHistoryBody.innerHTML = '';
+        dataList.innerHTML = '';
         const { data, error } = await supabaseC.from('history_table').select('*');
         if (error) {
             console.log(`Erro ao carregar a tabela de histórico: ${error}`);
             return;
         };
 
-        dataHistoryBody.innerHTML = '';
         if (data) {
             data.forEach((d) => {
                 const tr = document.createElement('tr');
