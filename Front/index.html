@@ -12,6 +12,8 @@
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="shortcut icon" href="assets/favicon.png" type="image/x-icon">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
 </head>
 
 <body>
@@ -234,10 +236,13 @@
                             <span class="desktop-only">Novo Item</span>
                             <span class="mobile-only">Novo</span>
                         </button>
-                        <button class="btn-secondary" id="goToHistory">
-                            <i data-lucide="history"></i>
-                            <span class="desktop-only">Histórico</span>
-                            <span class="mobile-only">Histórico</span>
+                        <button class="btn-secondary mobile-only" id="openBottomSheetBtn">
+                            <i data-lucide="ellipsis"></i>
+                        </button>
+                        <button class="btn-secondary desktop-only" id="exportPdfBtnData">
+                            <i data-lucide="file-text"></i>
+                            <span>Exportar em PDF</span>
+                            <i data-lucide="loader-circle" class="loaderI" style="opacity: 0;"></i>
                         </button>
                     </div>
                 </div>
@@ -520,7 +525,7 @@
                 </div>
             </div>
         </div>
-        <div class="page" data-page="historico">
+        <div class="page historico" data-page="historico" >
             <div class="page-content">
                 <div class="page-header-row">
                     <h2 class="page-main-title">Histórico</h2>
@@ -528,7 +533,7 @@
                 <div class="section-card desktop-only" style="margin-top: 20px;">
                     <div class="section-title">Histórico de objetos (adições, remoções e modificações)</div>
                 </div>
-                <table class="history-table">
+                <table class="history-table desktop-only">
                     <thead>
                         <tr>
                             <th>Nome</th>
@@ -539,6 +544,25 @@
                     </thead>
                     <tbody id="dataHistoryBody"></tbody>
                 </table>
+                <div class="recent-list mobile-only" id="historyList" style="margin-top: 12px;"></div>
+            </div>
+        </div>
+
+        <div class="bottom-sheet mobile-only" id="bottom-sheet">
+            <div class="bottom-sheet-background" id="bottom-sheet-background"></div>
+            <div class="bottom-sheet-window">
+                <div class="bottom-sheet-window-header">
+                    <span class="bottom-sheet-window-demarc"></span>
+                </div>
+                <div class="bottom-sheet-window-body">
+                    <button class="bottom-sheet-btn" id="goToHistory">
+                        <i data-lucide="scroll"></i> Histórico
+                    </button>
+                    <button class="bottom-sheet-btn" id="exportPdfBtn">
+                        <i data-lucide="file-text"></i> Exportar em PDF
+                        <i data-lucide="loader-circle" class="loaderI" style="opacity: 0;"></i>
+                    </button>
+                </div>
             </div>
         </div>
     </div>

@@ -682,37 +682,6 @@ body {
     }
 }
 
-/* =============================================
-   FILTROS
-   ============================================= */
-.filter-row {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    margin-top: 12px;
-}
-
-.filter-chip {
-    padding: 6px 14px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 600;
-    background: var(--gray-200);
-    color: var(--gray-600);
-    cursor: pointer;
-    transition: all var(--transition);
-    user-select: none;
-}
-
-.filter-chip.active {
-    background: var(--gray-800);
-    color: white;
-}
-
-.filter-chip:hover:not(.active) {
-    background: var(--gray-200);
-    color: var(--gray-800);
-}
 
 /* =============================================
    TABELA DE HISTÓRICO
@@ -799,6 +768,10 @@ body {
 .table-actions {
     display: flex;
     gap: 6px;
+}
+
+.no-export {
+    display: none;
 }
 
 /* =============================================
@@ -1254,9 +1227,17 @@ button {
     margin-bottom: 20px;
 }
 
+#openBottomSheetBtn {
+    display: none;
+}
+
 @media (max-width: 768px) {
     .form-grid {
         grid-template-columns: 1fr;
+    }
+
+    #openBottomSheetBtn {
+        display: inline;
     }
 }
 
@@ -1597,6 +1578,10 @@ button {
     /* Add form fills screen on mobile */
     .add-form {
         border-radius: var(--radius-lg);
+    }
+
+    .desktop-only {
+        display: none;
     }
 }
 
@@ -1940,3 +1925,125 @@ button {
     transform: scale(0.98);
     /* Dá aquele efeitinho de clique */
 }
+
+/* =============================================
+   BOTTOM SHEET (mobile-only panel menu)
+   ============================================= */
+.bottom-sheet {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    pointer-events: none;
+    visibility: hidden;
+    transition: visibility 0.3s ease;
+}
+
+.bottom-sheet.active {
+    visibility: visible;
+    pointer-events: auto;
+}
+
+/* Background overlay with premium backdrop blur */
+.bottom-sheet-background {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    transition: opacity 0.3s ease;
+}
+
+.bottom-sheet.active .bottom-sheet-background {
+    opacity: 1;
+}
+
+/* Bottom Sheet Sliding Window */
+.bottom-sheet-window {
+    position: relative;
+    background: var(--white);
+    border-radius: 28px 28px 0 0;
+    padding: 16px 24px calc(24px + env(safe-area-inset-bottom));
+    width: 100%;
+    z-index: 2;
+    transform: translateY(100%);
+    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.08);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.bottom-sheet.active .bottom-sheet-window {
+    transform: translateY(0);
+}
+
+/* Header & Handle/Demarcation indicator */
+.bottom-sheet-window-header {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 20px;
+}
+
+.bottom-sheet-window-demarc {
+    width: 50px;
+    height: 5px;
+    background: var(--gray-200);
+    border-radius: 99px;
+    opacity: 0.8;
+}
+
+/* Container for options buttons */
+.bottom-sheet-window-body {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-bottom: 12px;
+}
+
+/* Premium Options Buttons */
+.bottom-sheet-btn {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    padding: 16px 20px;
+    background: transparent;
+    border: none;
+    border-radius: var(--radius-md);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--gray-800);
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.1s ease;
+    user-select: none;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.bottom-sheet-btn:hover {
+    background: var(--gray-50);
+}
+
+.bottom-sheet-btn:active {
+    background: var(--gray-200);
+    transform: scale(0.98); /* Micro-animation of click */
+}
+
+/* Custom styling for icons inside bottom sheet buttons */
+.bottom-sheet-btn [data-lucide],
+.bottom-sheet-btn svg {
+    width: 22px;
+    height: 22px;
+    color: var(--gray-600);
+    stroke-width: 2;
+    transition: color 0.2s ease;
+}
+
+.bottom-sheet-btn:hover [data-lucide],
+.bottom-sheet-btn:hover svg {
+    color: var(--purple);
+}
+

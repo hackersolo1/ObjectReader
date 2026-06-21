@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const statSub = document.querySelector("#statSub");
     const dataTableBody = document.getElementById("dataTableBody");
     const btnAddItem = document.getElementById("btnAddItem");
+    const exportPdfBtnData = document.getElementById('exportPdfBtnData');
     const addForm = document.getElementById("addForm");
     const closeForm = document.getElementById("closeForm");
     const cancelForm = document.getElementById("cancelForm");
@@ -47,6 +48,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const objImageInputEdit = document.getElementById('objImageInputEdit');
     const btnSaveEdit = document.getElementById('btnSaveEdit');
     const dataHistoryBody = document.getElementById('dataHistoryBody');
+    const historyList = document.getElementById('historyList');
+    const openBottomSheetBtn = document.getElementById('openBottomSheetBtn');
+    const bottomSheet = document.getElementById('bottom-sheet');
+    const bottomSheetBackground = document.getElementById('bottom-sheet-background');
+    const goToHistory = document.getElementById('goToHistory');
+    const exportPdfBtn = document.getElementById('exportPdfBtn');
+
 
     btnAddItem.addEventListener("click", () => {
         addForm.style.display = "inline-block";
@@ -142,6 +150,93 @@ document.addEventListener("DOMContentLoaded", () => {
         });
         await updateObjInfo(oldC, name, code, local, state, obs, imageName, image);
     });
+
+    goToHistory.addEventListener('click', () => {
+        document.querySelector('[data-page="historico"]').click();
+        history.pushState({}, '', `#historico`);
+        bottomSheetBackground.click();
+    })
+
+    openBottomSheetBtn.addEventListener('click', () => {
+        bottomSheet.classList.add('active');
+    });
+
+    bottomSheetBackground.addEventListener('click', () => {
+        bottomSheet.classList.remove('active');
+    });
+
+
+    exportPdfBtnData.addEventListener('click', () => {
+        dataList.style = 'display: flex; opacity: 1';
+        exportPdfBtnData.querySelector('.loaderI').style = 'opacity: 1';
+        exportPdfBtnData.style = 'opacity: 0.5; cursor: not-allowed';
+        exportPdfBtnData.disabled = true;
+        exportPdfBtnData.title = 'Salvando...';
+
+        
+        const pdfOptions = {
+            margin: 10,
+            filename: 'lista_de_objetos.pdf',
+            image: {
+                type: 'jpeg',
+                quality: 0.98
+            },
+            html2canvas: {
+                scale: 3,
+                useCORS: true
+            },
+            jsPDF: {
+                unit: 'mm',
+                format: 'a4',
+                orientation: 'portrait'
+            }
+        };
+        setTimeout(() => {
+            html2pdf().set(pdfOptions).from(dataList).save().then(() => {
+                dataList.style = 'display: none;';
+                exportPdfBtnData.querySelector('.loaderI').style = 'opacity: 0';
+                exportPdfBtnData.style = 'opacity: 1; cursor: pointer';
+                exportPdfBtnData.disabled = false;
+                exportPdfBtnData.title = '';
+            });
+        }, 1500);
+    });
+
+    exportPdfBtn.addEventListener('click', () => {
+        dataList.style = 'opacity: 1; display: flex;';
+        exportPdfBtn.querySelector('.loaderI').style = 'opacity: 1';
+        exportPdfBtn.style = 'opacity: 0.5; cursor: not-allowed';
+        exportPdfBtn.disabled = true;
+        exportPdfBtn.title = 'Salvando...';
+
+        const pdfOptions = {
+            margin: 10,
+            filename: 'lista_de_objetos.pdf',
+            image: {
+                type: 'jpeg',
+                quality: 0.98
+            },
+            html2canvas: {
+                scale: 3,
+                useCORS: true
+            },
+            jsPDF: {
+                unit: 'mm',
+                format: 'a4',
+                orientation: 'portrait'
+            }
+        };
+
+        setTimeout(() => {
+            html2pdf().set(pdfOptions).from(dataList).save().then(() => {
+                exportPdfBtn.querySelector('.loaderI').style = 'opacity: 0';
+                exportPdfBtn.style = 'opacity: 1; cursor: pointer';
+                exportPdfBtn.disabled = false;
+                exportPdfBtn.title = '';
+            });
+        }, 1500)
+    });
+
 
     pages.forEach((p) => {
         p.addEventListener("click", (e) => {
@@ -270,11 +365,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function mobileRender(d) {
         var ih = null;
-        if (d.img_url) {
-            ih = `<img src="${d.img_url}" alt="Imagem do objeto" class="image_tumbnail"/>`
-        } else {
-            ih = '📦';
-        }
+        ih = d.img_url != 'Sem imagem' ? `<img src="${d.img_url}" alt="Imagem do objeto" class="image_tumbnail" crossorigin="anonymous"/>` : '📦';
         const div = document.createElement("div");
         div.classList.add("recent-item");
         div.innerHTML = `
@@ -308,6 +399,17 @@ document.addEventListener("DOMContentLoaded", () => {
                 `;
 
                 dataHistoryBody.appendChild(tr);
+
+                const div = document.createElement('div');
+                div.classList.add('recent-item');
+                div.innerHTML = `
+                    <div class="item-info">
+                        <div class="item-name">${d.objName}</div>
+                        <div class="item-meta">${d.modified_at}</div>
+                        <div class="item-meta">${d.modified_by}</div>
+                        <div class="item-meta">${d.modify_type}</div>
+                `;
+                historyList.appendChild(div);
             });
         };
     };
@@ -569,10 +671,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const { data: d1, error: e1 } = await supabaseC.from('ObjInfo').select('*').eq('objCode', c);
         const imgN = d1[0].img_name;
 
-        
+
         const { data: d2, error: e2 } = await supabaseC.storage.from('codeReaderImgFiles').remove(`private/${imgN}`);
         const { data: d3, error: e3 } = await supabaseC.from('ObjInfo').delete().eq('objCode', c);
-        
+
         if (e1 || e2 || e3) {
             alert(`Erro ao deletar objeto: ${e1 || e2 || e3}`);
             console.log(e1 || e2 || e3);
@@ -644,7 +746,8 @@ document.addEventListener("DOMContentLoaded", () => {
             b.disabled = true;
             b.title = "Seu navegador/dispositivo não suporta Scanner";
         });
-        idleScreen.querySelector('span').textContent = 'Seu navegador não tem suporte para o Scanner.'
+        idleScreen.querySelector('span').textContent = 'Seu navegador não tem suporte para o Scanner.';
+        resultSpan.textContent = 'Seu navegador não tem suporte para o Scanner.'
     } else {
         barcodeDetector = new BarcodeDetector({
             formats: ["ean_13", "code_128", "qr_code", "upc_a"],
