@@ -167,7 +167,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     exportPdfBtnData.addEventListener('click', () => {
-        dataList.style = 'display: flex; opacity: 1';
+        dataList.style = 'display: flex; opacity: 1; transition: none;';
         exportPdfBtnData.querySelector('.loaderI').style = 'opacity: 1';
         exportPdfBtnData.style = 'opacity: 0.5; cursor: not-allowed';
         exportPdfBtnData.disabled = true;
@@ -193,7 +193,7 @@ document.addEventListener("DOMContentLoaded", () => {
         };
         setTimeout(() => {
             html2pdf().set(pdfOptions).from(dataList).save().then(() => {
-                dataList.style = 'display: none;';
+                dataList.style = 'display: none; transition: 0.2s ease';
                 exportPdfBtnData.querySelector('.loaderI').style = 'opacity: 0';
                 exportPdfBtnData.style = 'opacity: 1; cursor: pointer';
                 exportPdfBtnData.disabled = false;
@@ -203,7 +203,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     exportPdfBtn.addEventListener('click', () => {
-        dataList.style = 'opacity: 1; display: flex;';
+        dataList.style = 'opacity: 1; display: flex; transition: none';
         exportPdfBtn.querySelector('.loaderI').style = 'opacity: 1';
         exportPdfBtn.style = 'opacity: 0.5; cursor: not-allowed';
         exportPdfBtn.disabled = true;
