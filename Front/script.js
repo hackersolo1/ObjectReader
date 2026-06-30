@@ -20,6 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const iconBtn = document.getElementById('icon-btn');
     const bottomIconBtn = document.getElementById('bottom-icon-btn');
     const headerAvatarImg = document.getElementById("headerAvatarImg");
+    const headerTitle = document.getElementById('headerTitle');
     const AvatarImgBottom = document.getElementById("AvatarImgBottom");
     const headerAvatarIcon = document.getElementById("headerAvatarIcon");
     const AvatarIconBottom = document.getElementById("AvatarIconBottom");
@@ -173,7 +174,7 @@ document.addEventListener("DOMContentLoaded", () => {
         exportPdfBtnData.disabled = true;
         exportPdfBtnData.title = 'Salvando...';
 
-        
+
         const pdfOptions = {
             margin: 10,
             filename: 'lista_de_objetos.pdf',
@@ -246,6 +247,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
             el = e.currentTarget.dataset.page;
             history.pushState({}, '', `#${el}`);
+            headerTitle.innerText = el.toLowerCase();
             document.querySelectorAll(".app-wrapper .page").forEach((bpa) => {
                 bpa.classList.remove("active");
                 document
@@ -263,6 +265,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
             el = e.currentTarget.dataset.nav;
             history.pushState({}, '', `#${el}`);
+            headerTitle.innerText = el.toLowerCase();
             document.querySelectorAll(".app-wrapper [data-page]").forEach((bpa) => {
                 bpa.classList.remove("active");
                 document
